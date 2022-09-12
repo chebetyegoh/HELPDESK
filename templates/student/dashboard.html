@@ -1,0 +1,47 @@
+{% extends 'portal.html'%}
+{% load static %}
+
+{% block content %}
+<div class="wrapper">
+    <div class="sidebar">
+        <h4>Menu</h4>
+        <ul>
+            <li><a href="#"><i class="fa-solid fa-pen-to-square"></i>Raise a Ticket</a></li>
+            <li><a href="#"><i class="fa-solid fa-pen-to-square"></i>My Tickets</a></li>
+            <li><a href="#"><i class="fa-solid fa-user"></i>My Account</a></li>
+            <li><a href="#"><i class="fa-solid fa-lock"></i>Change Password</a></li>
+        </ul> 
+    </div>
+    <div class="main_content">
+        <div class="header">RAISE A TICKET</div>
+        <div class="info">
+            <div class="form-row">
+                <div class="name">Ticket Name</div>
+                <div class="value">
+                    <div class="input-group">
+                        <input class="input--style-5" type="text" name="ticket_name">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="name">Ticket Type</div>
+                <div class="value">
+                    <div class="input-group">
+                        <input class="input--style-5" type="text" name="ticket_status">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="name">Ticket Description</div>
+                <div class="value">
+                    <div class="input-group">
+                        <input class="input--style-5" type="" name="ticket_description">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-button">
+                <input type="submit" name="raise_ticket" id="raise_ticket" class="form-submit" value="Raise ticket" />
+            </div>
+        </div>
+    </div>
+    {% endblock content %}
