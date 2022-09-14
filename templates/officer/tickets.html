@@ -1,21 +1,21 @@
 {% extends 'portal.html'%}
-{% load static%}
+{% load static %}
 {% block content %}
 <div class="wrapper">
     <div class="sidebar">
         <h4>Menu</h4>
         <ul>
-            <li><a href="#"><i class="fa-solid fa-pen-to-square"></i>Raise a Ticket</a></li>
-            <li><a href="#"><i class="fa-solid fa-pen-to-square"></i>My Tickets</a></li>
+            <li><a href="#"><i class="fa-solid fa-qrcode"></i>Dashboard</a></li>
+            <li><a href="#"><i class="fa-solid fa-pen-to-square"></i>Tickets</a></li>
             <li><a href="#"><i class="fa-solid fa-user"></i>My Account</a></li>
             <li><a href="#"><i class="fa-solid fa-lock"></i>Change Password</a></li>
         </ul>
     </div>
     <div class="main_content">
-        <div class="header">MY TICKETS</div>
+        <div class="header">TICKETS</div>
         <div class="table">
             <div class="table_section">
-                <table>
+                <table> 
                     <thead>
                         <tr>
                             <th>Ticket ID</th>
@@ -113,5 +113,5 @@
             </div>
         </div>
     </div>
-
-    {% endblock content %}
+</div>
+{% endblock content %}

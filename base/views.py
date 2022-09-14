@@ -33,4 +33,39 @@ class My_Account(TemplateView):
 class Change_Password(TemplateView):
     template_name = 'student/change_password.html'
 
+class Officer_Dashboard(TemplateView):
+    template_name = 'officer/dashboard.html'
 
+class Officer_Tickets(TemplateView):
+    template_name = 'officer/tickets.html'
+
+class Officer_Account(TemplateView):
+    template_name = 'officer/my_account.html'
+
+class Officer_Change_Password(TemplateView):
+    template_name = 'officer/change_password.html'
+
+class Admin_Dashboard(TemplateView):
+    template_name = 'admin/dashboard.html'
+
+class Admin_Ticket_Report(TemplateView):
+    template_name = 'admin/ticket_report.html'
+
+class Admin_Change_Password(TemplateView):
+    template_name = 'admin/change_password.html'
+
+class Register_Officer(TemplateView):
+    template_name = 'admin/register_officer.html'
+
+class Officers_List(TemplateView):
+    template_name = 'admin/officers_list.html'
+
+class Admin_Student_report(TemplateView):
+    template_name = 'admin/student_report.html'
+
+class About(TemplateView):
+    template_name = 'about.html'
+
+
+class Services(TemplateView):
+    template_name = 'service.html'

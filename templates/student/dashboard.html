@@ -10,38 +10,49 @@
             <li><a href="#"><i class="fa-solid fa-pen-to-square"></i>My Tickets</a></li>
             <li><a href="#"><i class="fa-solid fa-user"></i>My Account</a></li>
             <li><a href="#"><i class="fa-solid fa-lock"></i>Change Password</a></li>
-        </ul> 
+        </ul>
     </div>
     <div class="main_content">
         <div class="header">RAISE A TICKET</div>
-        <div class="info">
-            <div class="form-row">
-                <div class="name">Ticket Name</div>
-                <div class="value">
-                    <div class="input-group">
-                        <input class="input--style-5" type="text" name="ticket_name">
+        <form method="POST" class="register-form" id="raise_ticket">
+            <div class="info">
+                <div class="form-row">
+                    <div class="name">Ticket Name</div>
+                    <div class="value">
+                        <div class="input-group">
+                            <input class="input--style-5" type="text" name="ticket_name">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="name">Ticket Type</div>
-                <div class="value">
-                    <div class="input-group">
-                        <input class="input--style-5" type="text" name="ticket_status">
+                <div class="form-row">
+                    <div class="name">Ticket Type</div>
+                    <div class="value">
+                        <div class="input-group">
+                            <input class="input--style-5" type="text" name="ticket_type">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="name">Ticket Description</div>
-                <div class="value">
-                    <div class="input-group">
-                        <input class="input--style-5" type="" name="ticket_description">
+                <div class="form-row">
+                    <div class="name">Ticket Status</div>
+                    <div class="value">
+                        <div class="input-group">
+                            <input class="input--style-5" type="text" name="ticket_status">
+                        </div>
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="name">Ticket Description</div>
+                    <div class="value">
+                        <div class="input-group">
+                            <input class="input--style-5" type="" name="ticket_description">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-button">
+                    <input type="submit" name="raise_ticket" id="raise_ticket" class="form-submit"
+                        value="Raise ticket" />
+                </div>
             </div>
-            <div class="form-group form-button">
-                <input type="submit" name="raise_ticket" id="raise_ticket" class="form-submit" value="Raise ticket" />
-            </div>
-        </div>
+        </form>
     </div>
     {% endblock content %}

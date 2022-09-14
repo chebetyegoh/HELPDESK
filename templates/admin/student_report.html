@@ -1,0 +1,62 @@
+{% extends 'portal.html'%}
+{% load static %}
+{% block content %}
+<div class="wrapper">
+    <div class="sidebar">
+        <h4>Menu</h4>
+        <ul>
+            <li><a href="#"><i class="fa-solid fa-qrcode"></i>Dashboard</a></li>
+            <li><a href="#"><i class="fa-solid fa-pen-to-square"></i>Ticket Report</a></li>
+            <li><a href="#"><i class="fa-solid fa-pen-to-square"></i>Student Report</a></li>
+            <li><a href="#"><i class="fa-solid fa-pen-to-square"></i>Officer Report</a></li>
+            <li><a href="#"><i class="fa-solid fa-lock"></i>Change Password</a></li>
+            <li><a href="#"><i class="fa-solid fa-user"></i>Create Officer Account</a></li>
+            
+            
+        </ul>
+    </div>
+    <div class="main_content">
+        <div class="header">STUDENTS</div>
+        <div class="table">
+            <div class="table_section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>S/N</th>
+                            <th>Name</th>
+                            <th>Student Registration No.</th>
+                            <th>Email</th>
+                            <th>Joined on</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0001</td>
+                            <td>John Mark</td>
+                            <td>S13/03159/18</td>
+                            <td>john@gmail.com</td>
+                            <td>2022-12-08</td>
+                            <td>
+                                <button><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>0001</td>
+                            <td>John Mark</td>
+                            <td>S13/03159/18</td>
+                            <td>john@gmail.com</td>
+                            <td>2022-12-08</td>
+                            <td>
+                                <button><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
