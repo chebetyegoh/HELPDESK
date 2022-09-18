@@ -69,3 +69,19 @@ class About(TemplateView):
 
 class Services(TemplateView):
     template_name = 'service.html'
+
+class Contact_us(TemplateView):
+    template_name = 'contact_us.html'
+
+class Terms(TemplateView):
+    template_name = 'terms.html'
+
+class Graph(TemplateView):
+    template_name = 'admin/graph.html'
+    
+
+class Ticket(TemplateView):
+    template_name = 'student/view_ticket.html'
+
+class Close_Ticket(TemplateView):
+    template_name = 'officer/close_ticket.html'

@@ -1,0 +1,26 @@
+{% extends 'portal.html'%}
+{% load static %}
+{% block content %}
+<div class="wrapper">
+    <div class="sidebar">
+        <h4>Menu</h4>
+        <ul>
+            <li><a href="#"><i class="fa-solid fa-qrcode"></i>Dashboard</a></li>
+            <li><a href="#"><i class="fa-solid fa-pen-to-square"></i>Tickets</a></li>
+            <li><a href="#"><i class="fa-solid fa-user"></i>My Account</a></li>
+            <li><a href="#"><i class="fa-solid fa-lock"></i>Change Password</a></li>
+        </ul>
+    </div>
+    <div class="main_content">
+        <div class="header">CLOSE TICKET</div>
+        <div>
+            <div>
+                
+            </div>
+            <div class="form-group form-button">
+                <input type="submit" name="signup" id="signup" class="form-submit" value="Close Ticket" />
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
