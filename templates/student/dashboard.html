@@ -6,15 +6,16 @@
     <div class="sidebar">
         <h4>Menu</h4>
         <ul>
-            <li><a href="#"><i class="fa-solid fa-pen-to-square"></i>Raise a Ticket</a></li>
-            <li><a href="#"><i class="fa-solid fa-pen-to-square"></i>My Tickets</a></li>
-            <li><a href="#"><i class="fa-solid fa-user"></i>My Account</a></li>
-            <li><a href="#"><i class="fa-solid fa-lock"></i>Change Password</a></li>
+            <li><a href="{% url 'raise-ticket'%}"><i class="fa-solid fa-pen-to-square"></i>Raise a Ticket</a></li>
+            <li><a href="{% url 'my-tickets'%}"><i class="fa-solid fa-pen-to-square"></i>My Tickets</a></li>
+            <li><a href="{% url 'my-account'%}"><i class="fa-solid fa-user"></i>My Account</a></li>
+            <li><a href="{% url 'change-password'%}"><i class="fa-solid fa-lock"></i>Change Password</a></li>
         </ul>
     </div>
     <div class="main_content">
         <div class="header">RAISE A TICKET</div>
-        <form method="POST" class="register-form" id="raise_ticket">
+        <form method="post" class="register-form" id="raise_ticket" action="">
+            {% csrf_token %}
             <div class="info">
                 <div class="form-row">
                     <div class="name">Ticket Name</div>
@@ -28,6 +29,11 @@
                     <div class="name">Ticket Type</div>
                     <div class="value">
                         <div class="input-group">
+                            <!--<select name="formart" id="format">
+                                <option selected disabled>Select Ticket Type</option>
+                                <option value="critical">Critical</option>
+                                <option value="low">Low Priority</option>
+                            </select>-->
                             <input class="input--style-5" type="text" name="ticket_type" placeholder="Ticket Type">
                         </div>
                     </div>

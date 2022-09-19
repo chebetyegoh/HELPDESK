@@ -5,17 +5,28 @@
     <div class="sidebar">
         <h4>Menu</h4>
         <ul>
-            <li><a href="#"><i class="fa-solid fa-pen-to-square"></i>Raise a Ticket</a></li>
-            <li><a href="#"><i class="fa-solid fa-pen-to-square"></i>My Tickets</a></li>
-            <li><a href="#"><i class="fa-solid fa-user"></i>My Account</a></li>
-            <li><a href="#"><i class="fa-solid fa-lock"></i>Change Password</a></li>
+            <li><a href="{% url 'raise-ticket'%}"><i class="fa-solid fa-pen-to-square"></i>Raise a Ticket</a></li>
+            <li><a href="{% url 'my-tickets'%}"><i class="fa-solid fa-pen-to-square"></i>My Tickets</a></li>
+            <li><a href="{% url 'my-account'%}"><i class="fa-solid fa-user"></i>My Account</a></li>
+            <li><a href="{% url 'change-password'%}"><i class="fa-solid fa-lock"></i>Change Password</a></li>
         </ul>
     </div>
     <div class="main_content">
         <div class="header">TICKET</div>
+        <div class="view_ticket">
+            <div class="user-details">
+                <img src="/static/user.png">
+                <h4>Damaris Jebet<br> S13/03159/18</h4>
+            </div>
+
+            <span>Remarking</span>
+            <p><span>Ticket Status:</span> Open</p>
+            <p><span>Created at:</span> 22-08-09</p>
+            <p>I would like to request remarking of Comp 234</p>
+        </div>
         <div>
-            
+
         </div>
 
     </div>
-{% endblock content %}
+    {% endblock content %}

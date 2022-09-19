@@ -24,8 +24,8 @@
        <label for="checkbox_toggle" class="hamburger">&#9776;</label> -->
       <!-- NAVIGATION MENUS -->
       <div class="menu">
-        <li><a href="/">Home</a></li>
-        <li><a href="/">Register</a></li>
+        <li><a href="{% url 'home'%}">Home</a></li>
+        <li><a href="{% url 'register'%}">Register</a></li>
         <!-- <li class="services">
            <a href="/">Services</a>
             DROPDOWN MENU -->
@@ -37,8 +37,8 @@
              <li><a href="/">Dropdown 4</a></li>
            </ul>
          </li> -->
-        <li><a href="/">Login</a></li>
-        <li><a href="/">About</a></li>
+        <li><a href="{% url 'login'%}">Login</a></li>
+        <li><a href="{% url 'about'%}">About</a></li>
       </div>
     </ul>
   </nav>
@@ -58,11 +58,11 @@
             class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a
           href="#"><i class="icon ion-social-facebook"></i></a></div>
       <ul class="list-inline">
-        <li class="list-inline-item"><a href="#">Home</a></li>
-        <li class="list-inline-item"><a href="#">Services</a></li>
-        <li class="list-inline-item"><a href="#">About</a></li>
-        <li class="list-inline-item"><a href="#">Contact</a></li>
-        <li class="list-inline-item"><a href="#">Terms</a></li>
+        <li class="list-inline-item"><a href="{% url 'home'%}">Home</a></li>
+        <li class="list-inline-item"><a href="{% url 'services'%}">Services</a></li>
+        <li class="list-inline-item"><a href="{% url 'about'%}">About</a></li>
+        <li class="list-inline-item"><a href="{% url 'contact'%}">Contact</a></li>
+        <li class="list-inline-item"><a href="{% url 'terms'%}">Terms</a></li>
 
       </ul>
       <p class="copyright">Ticketing Management System © 2022</p>

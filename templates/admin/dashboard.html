@@ -5,12 +5,12 @@
     <div class="sidebar">
         <h4>Menu</h4>
         <ul>
-            <li><a href="#"><i class="fa-solid fa-qrcode"></i>Dashboard</a></li>
-            <li><a href="#"><i class="fa-solid fa-pen-to-square"></i>Ticket Report</a></li>
-            <li><a href="#"><i class="fa-solid fa-pen-to-square"></i>Student Report</a></li>
-            <li><a href="#"><i class="fa-solid fa-pen-to-square"></i>Officer Report</a></li>
-            <li><a href="#"><i class="fa-solid fa-lock"></i>Change Password</a></li>
-            <li><a href="#"><i class="fa-solid fa-user"></i>Create Officer Account</a></li>
+            <li><a href="{% url 'admin-dashboard' %}"><i class="fa-solid fa-qrcode"></i>Dashboard</a></li>
+            <li><a href="{% url 'ticket-report' %}"><i class="fa-solid fa-pen-to-square"></i>Ticket Report</a></li>
+            <li><a href="{% url 'student-report' %}"><i class="fa-solid fa-pen-to-square"></i>Student Report</a></li>
+            <li><a href="{% url 'officers-list' %}"><i class="fa-solid fa-pen-to-square"></i>Officer Report</a></li>
+            <li><a href="{% url 'admin-change-password' %}"><i class="fa-solid fa-lock"></i>Change Password</a></li>
+            <li><a href="{% url 'create-officer-account' %}"><i class="fa-solid fa-user"></i>Create Officer Account</a></li>
 
         </ul>
     </div>
@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="dashboard-button">
-            <button class="btn grn-btn">View Report</button>
+            <button class="btn grn-btn"><a href="{% url 'graph' %}" style="color: #fff;">View Report</a></button>
         </div>
     </div>
 
