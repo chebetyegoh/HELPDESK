@@ -17,7 +17,15 @@ class Ticket(models.Model):
     ticket_name = models.CharField(max_length=200, blank=True)
     ticket_type = models.CharField(max_length=200, blank=True)
     ticket_description = models.TextField(max_length=200, blank=True)
-    ticket_status = models.CharField(max_length=200, blank=True)
+
+    StatusChoices = [
+        ('InProgress', 'InProgress'),
+        ('Open', 'Open'),
+        ('Closed', 'Closed'),
+        ('Deferred', 'Deferred'),
+    ]
+    ticket_status = models.CharField(max_length=200, choices=StatusChoices,
+        default= 'Open', blank=True)
     created_at = models.DateTimeField(default=datetime.now, blank=True)
     updated_at = models.DateTimeField(default=datetime.now, blank=True)
 
@@ -40,14 +48,15 @@ class Student(models.Model):
     first_name = models.CharField(max_length=200, blank=False, null=True)
     last_name = models.CharField(max_length=200, blank=False, null=True)
     email = models.EmailField(null=True, blank=False, unique=True)
+    username = models.CharField(max_length= 200, null=True, blank=False)
     created_at = models.DateTimeField(default=datetime.now, blank=True)
     updated_at = models.DateTimeField(default=datetime.now, blank=True)
 
     class Meta:
         ordering = ['last_name', 'first_name']
 
-    """def get_absolute_url(self):
-        return reverse('student-detail', args=[str(self.id)])"""
+    def get_absolute_url(self):
+        return reverse('login')
 
     def __str__(self):
         return f'{self.last_name}, {self.first_name}'

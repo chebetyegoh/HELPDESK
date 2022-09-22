@@ -15,7 +15,7 @@
         <div class="header">TICKETS</div>
         <div class="table">
             <div class="table_section">
-                <table> 
+                <table>
                     <thead>
                         <tr>
                             <th>Ticket ID</th>
@@ -28,78 +28,22 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for ticket in object_list %}
                         <tr>
-                            <td>0001</td>
-                            <td>Remarking</td>
-                            <td>High</td>
-                            <td>I would like remarking of my COMP 473 exam</td>
-                            <td>Open</td>
-                            <td>Damaris</td>
+
+                            <td>{{ ticket.ticket_id }}</td>
+                            <td>{{ ticket.ticket_name }}</td>
+                            <td>{{ ticket.ticket_type }}</td>
+                            <td>{{ ticket.ticket_status }}</td>
+                            <td>{{ ticket.created_at}}</td>
+                            <td>{{ ticket.updated_at}}</td>
+
                             <td>
-                                <button>View</button>
+                                <a href="{%url 'close-ticket' ticket.ticket_id %}"><button>View</button></a>
                                 <button><i class="fa-solid fa-trash"></i></button>
                             </td>
                         </tr>
-                        <tr>
-                            <td>0001</td>
-                            <td>Remarking</td>
-                            <td>High</td>
-                            <td>I would like remarking of my COMP 473 exam</td>
-                            <td>Open</td>
-                            <td>Damaris</td>
-                            <td>
-                                <button>View</button>
-                                <button><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>0001</td>
-                            <td>Remarking</td>
-                            <td>High</td>
-                            <td>I would like remarking of my COMP 473 exam</td>
-                            <td>Open</td>
-                            <td>Damaris</td>
-                            <td>
-                                <button>View</button>
-                                <button><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>0001</td>
-                            <td>Remarking</td>
-                            <td>High</td>
-                            <td>I would like remarking of my COMP 473 exam</td>
-                            <td>Open</td>
-                            <td>Damaris</td>
-                            <td>
-                                <button>View</button>
-                                <button><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>0001</td>
-                            <td>Remarking</td>
-                            <td>High</td>
-                            <td>I would like remarking of my COMP 473 exam</td>
-                            <td>Open</td>
-                            <td>Damaris</td>
-                            <td>
-                                <button>View</button>
-                                <button><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>0001</td>
-                            <td>Remarking</td>
-                            <td>High</td>
-                            <td>I would like remarking of my COMP 473 exam</td>
-                            <td>Open</td>
-                            <td>Damaris</td>
-                            <td>
-                                <button>View</button>
-                                <button><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

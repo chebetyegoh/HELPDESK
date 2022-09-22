@@ -13,13 +13,21 @@
     </div>
     <div class="main_content">
         <div class="header">CLOSE TICKET</div>
-        <div>
-            <div>
-                
+        <div class="view_ticket">
+
+            <div class="user-details">
+                <img src="/static/user.png">
+                <h4>Damaris Jebet<br> S13/03159/18</h4>
             </div>
-            <div class="form-group form-button">
-                <input type="submit" name="signup" id="signup" class="form-submit" value="Close Ticket" />
-            </div>
+
+            <span>{{ object.ticket_name}}</span>
+            <p><span>Ticket Status:</span> {{object.ticket_status}}</p>
+            <p><span>Created at:</span> {{object.created_at}}</p>
+            <p>{{ object.ticket_description}}</p>
+
+        </div>
+        <div class="form-group form-button">
+            <input type="submit" name="signup" id="signup" class="form-submit" value="Close Ticket" />
         </div>
     </div>
 </div>

@@ -136,3 +136,4 @@ STATICFILES_FINDERS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL='base.Users'
+LOGIN_REDIRECT_URL = '/'

@@ -40,7 +40,7 @@
                             <td>{{ ticket.updated_at}}</td>
                            
                             <td>
-                                <button>View</button>
+                                <a href="{%url 'ticket' ticket.ticket_id %}"><button>View</button></a>
                                 <button><i class="fa-solid fa-trash"></i></button>
                             </td>
                         </tr>

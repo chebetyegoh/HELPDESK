@@ -8,10 +8,22 @@
             <div class="signup-content">
                 <div class="signup-form">
                     <h2 class="form-title">Sign up</h2>
-                    <form method="POST" class="register-form" id="register-form">
+
+
+                    <form method="POST" class="register-form" id="register-form" action="">
+                        {% csrf_token %}
                         <div class="form-group">
-                            <label for="name"><i class="fa-solid fa-user"></i></label>
-                            <input type="text" name="name" id="name" placeholder="Your Name" />
+                            <label for="First name"><i class="fa-solid fa-user"></i></label>
+                            <input type="text" name="first_name" id="first_name" placeholder="Your First Name" />
+                        </div>
+                        <div class="form-group">
+                            <label for="Last name"><i class="fa-solid fa-user"></i></label>
+                            <input type="text" name="last_name" id="last_name" placeholder="Your Last Name" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Username"><i class="fa-solid fa-user"></i></label>
+                            <input type="text" name="username" id="username" placeholder="Your Username" />
                         </div>
                         <div class="form-group">
                             <label for="reg_no"><i class="fa-solid fa-hashtag"></i></label>
@@ -23,7 +35,7 @@
                         </div>
                         <div class="form-group">
                             <label for="pass"><i class="fa-solid fa-lock"></i></label>
-                            <input type="password" name="pass" id="pass" placeholder="Password" />
+                            <input type="password" name="password" id="pass" placeholder="Password" />
                         </div>
                         <div class="form-group">
                             <label for="re-pass"><i class="fa-solid fa-lock"></i></label>
@@ -31,7 +43,8 @@
                         </div>
                         <div class="form-group">
                             <label for="agree-term" class="label-agree-term"><span><span></span></span>By signing up you
-                                agree to our <a href="terms" class="term-service">Terms of service</a></label>
+                                agree to our <a href="{% url 'terms' %}" class="term-service">Terms of
+                                    service</a></label>
                         </div>
                         <div class="form-group form-button">
                             <input type="submit" name="signup" id="signup" class="form-submit" value="Register" />
@@ -40,7 +53,7 @@
                 </div>
                 <div class="signup-image">
                     <figure><img src="/static/image.jpg" alt="sing up image"></figure>
-                    <a href="login" class="signup-image-link">I am already member</a>
+                    <a href="{% url 'login' %}" class="signup-image-link">I am already member</a>
                 </div>
             </div>
         </div>

@@ -1,11 +1,12 @@
 from re import L
 from django.urls import path
-from .views import Home, Register_student, Login_student, Register_officer,Login_officer,Login_admin, Raise_Ticket,My_Tickets,My_Account,Change_Password,Officer_Dashboard, Officer_Tickets,Officer_Account,Officer_Change_Password,Admin_Dashboard,Admin_Ticket_Report,Admin_Change_Password,Register_Officer,Officers_List,Admin_Student_report,About,Services,Contact_us,Terms,Graph,Ticket,Close_Ticket
-
+from .views import Home, register_student, Login_student, Register_officer,Login_officer,Login_admin, Raise_Ticket,My_Tickets,My_Account,Change_Password,Officer_Dashboard, Officer_Tickets,Officer_Account,Officer_Change_Password,Admin_Dashboard,Admin_Ticket_Report,Admin_Change_Password,Register_Officer,Officers_List,Admin_Student_report,About,Services,Contact_us,Terms,Graph,Ticket_view,Close_Ticket
+from . import views
 urlpatterns =[
+    
     path('', Home.as_view(), name='home'),
-    path('register', Register_student.as_view(), name='register'),
-    path('login', Login_student.as_view(), name='login'),
+    path('register/', views.register_student, name='register'),
+    path('login/', views.login_student, name='login'),
     path('register-officer', Register_officer.as_view(), name='register-officer'),
     path('login-officer', Login_officer.as_view(), name='login-officer'),
     path('login-admin',Login_admin.as_view(), name='login-admin'),
@@ -28,7 +29,7 @@ urlpatterns =[
     path('contact', Contact_us.as_view(), name='contact'),
     path('terms', Terms.as_view(), name='terms'),
     path('graph',Graph.as_view(), name='graph'),
-    path('ticket', Ticket.as_view(), name='ticket'),
-    path('close-ticket', Close_Ticket.as_view(), name='close-ticket'),
+    path('ticket/<int:pk>', Ticket_view.as_view(), name='ticket'),
+    path('close-ticket/<int:pk>', Close_Ticket.as_view(), name='close-ticket'),
                                                              
 ]
