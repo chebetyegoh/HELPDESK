@@ -1,13 +1,15 @@
 from contextlib import redirect_stderr
+from email import message
 from multiprocessing import context
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate,logout
+from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
-from django.contrib.auth.forms import AuthenticationForm 
+from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import TemplateView, CreateView, ListView, DetailView
 from django.urls import reverse_lazy
 from .models import Ticket, Student, Officer
-from .forms import Signup
+from django.views.decorators.csrf import csrf_protect
+from .forms import RegisterFormStudent, LoginStudentForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.decorators.csrf import csrf_exempt
 from .models import Users
@@ -18,60 +20,59 @@ class Home(TemplateView):
     template_name = 'home.html'
 
 
-
-
 class Login_student(TemplateView):
     template_name = 'student/login.html'
-@csrf_exempt
+
+@csrf_protect
 def login_student(request):
-	if request.method == "POST":
-		#form = AuthenticationForm(request, data=request.POST)
-       
-		# if form.is_valid():
-			username = request.POST['username']
-			password = request.POST['password']
-			user = authenticate(username=username, password=password)
-			if user is not None:
-				login(request, user)
-				messages.info(request, f"You are now logged in as {username}.")               
-                    
-				return redirect("raise-ticket")
-			else:
-				messages.error(request,"Invalid username or password.")
-		# else:
-		# 	messages.error(request,"Invalid username or password.")
-            
-	# form = AuthenticationForm()
-	return render(request, 'student/login.html')
-@csrf_exempt
-def register_student(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        password = request.POST['password']
-        reg_no = request.POST['reg_no']
-        re_pass = request.POST['re_pass']
-        email = request.POST['email']
-        if (password != re_pass):
-            messages.error(request, "Password do not match")
-        else:
-            try:
-                user = Users.objects.get(username=username)
-            except:
-                user = None
-    
-            
-            if(user is not None):
-                messages.error(request, 'User already exists')
+            print('test')
+            form = LoginStudentForm(request.POST)
+            print (request.POST)
+        
+            print("form is valid")
+            # username = form.cleaned_data.get('username')
+            username = request.POST['username']
+            print(username)
+            # password = form.cleaned_data.get('password')
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('raise-ticket')
+                else:
+                    messages.error(request, 'The account is disabled')
             else:
-                Users.objects.create(username=username, first_name=first_name, last_name=last_name, email=email, password=password, is_Student=True)
-                
-                messages.info(request, 'user registered')
-                return redirect("login")
+                messages.error(request, "Invalid username or password.")
+    else:
+        messages.error(request, "Invalid username or password.")
 
-    return render(request, 'student/register.html')
+    form = LoginStudentForm()
 
+    return render(request, "student/login.html", {'form': form})
+
+@csrf_protect
+def register_student(request):
+    if request.method == 'GET':
+        form = RegisterFormStudent()
+        context = {'form': form}
+        return render(request, 'student/register.html', context)
+    if request.method == 'POST':
+        form = RegisterFormStudent(request.POST or None)
+        if form.is_valid():
+            form.save()
+            user = form.cleaned_data.get('username')
+            messages.success(request, 'Account was created for ' + user)
+            return redirect('login')
+    else:
+        form = RegisterFormStudent()
+        print('Form is invalid')
+        messages.error(request, 'Error Processing Your Request')
+        context = {'form': form}
+        return render(request, 'student/register.html', context)
+    # context={'form':form}
+    return render(request, 'student/register.html', {'form': RegisterFormStudent})
 
 
 class Register_officer(TemplateView):
