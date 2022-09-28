@@ -8,11 +8,7 @@
             <div class="signup-content">
                 <div class="signup-form">
                     <h2 class="form-title">Sign up</h2>
-                    {% for message in messages %}
-                    {{message}}
-                    {% endfor %}
-
-                    <form method="POST" class="register-form" id="register-form" action="{% url 'register' %}" enctype="multipart/form-data">
+                    <form method="POST" class="register-form" id="register-form" action="" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="First name"><i class="fa-solid fa-user"></i></label>

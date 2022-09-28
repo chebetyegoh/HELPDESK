@@ -9,7 +9,7 @@ from django.views.generic import TemplateView, CreateView, ListView, DetailView
 from django.urls import reverse_lazy
 from .models import Ticket, Student, Officer
 from django.views.decorators.csrf import csrf_protect
-from .forms import RegisterFormStudent, LoginStudentForm
+from .forms import SignupStudent, LoginStudentForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.decorators.csrf import csrf_exempt
 from .models import Users
@@ -23,56 +23,99 @@ class Home(TemplateView):
 class Login_student(TemplateView):
     template_name = 'student/login.html'
 
+
 @csrf_protect
 def login_student(request):
     if request.method == 'POST':
-            print('test')
-            form = LoginStudentForm(request.POST)
-            print (request.POST)
-        
-            print("form is valid")
-            # username = form.cleaned_data.get('username')
-            username = request.POST['username']
-            print(username)
-            # password = form.cleaned_data.get('password')
-            password = request.POST['password']
-            user = authenticate(username=username, password=password)
+        print('test')
+        form = LoginStudentForm(None, data=request.POST)
+        print(request.POST)
+
+        print("form is valid")
+        # username = form.cleaned_data.get('username')
+        username = request.POST['username']
+        #print(email)
+        # password = form.cleaned_data.get('password')
+        password = request.POST['password']
+        print(password)
+        user = authenticate(username=username, password=password)
+        if form.is_valid():
+            form.clean()
+            user = form.get_user()
             if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return redirect('raise-ticket')
-                else:
-                    messages.error(request, 'The account is disabled')
+                login(request, user)
+            
+                messages.info(request, 'logged-in!')           
+                return redirect('raise-ticket')
             else:
-                messages.error(request, "Invalid username or password.")
-    else:
-        messages.error(request, "Invalid username or password.")
+                messages.error(request,"Invalid username or password.")
+        else:
+            messages.error(request, "Invalid username or password.")
+# else:
+#     messages.error(request, "Invalid email or password.")
 
     form = LoginStudentForm()
 
     return render(request, "student/login.html", {'form': form})
 
-@csrf_protect
-def register_student(request):
-    if request.method == 'GET':
-        form = RegisterFormStudent()
-        context = {'form': form}
-        return render(request, 'student/register.html', context)
-    if request.method == 'POST':
-        form = RegisterFormStudent(request.POST or None)
-        if form.is_valid():
-            form.save()
-            user = form.cleaned_data.get('username')
-            messages.success(request, 'Account was created for ' + user)
-            return redirect('login')
-    else:
-        form = RegisterFormStudent()
-        print('Form is invalid')
-        messages.error(request, 'Error Processing Your Request')
-        context = {'form': form}
-        return render(request, 'student/register.html', context)
-    # context={'form':form}
-    return render(request, 'student/register.html', {'form': RegisterFormStudent})
+
+
+# class StudentSignUpView(CreateView):
+#     model = Users
+#     #fields = '__all__'
+#     form_class = SignupStudent
+#     template_name = 'student/register.html'
+
+
+#     def get_context_data(self, **kwargs):
+#         kwargs['user_type'] = 'student'
+#         return super().get_context_data(**kwargs)
+
+#     def form_valid(self, form):
+#         user = form.save()
+#         login(self.request, user)
+#         return redirect('raise-ticket')
+
+
+
+@csrf_exempt
+def register_student(request):  
+    if request.method == 'POST':  
+        form = SignupStudent(request.POST or None)  
+        if form.is_valid():  
+            form.save()  
+            return redirect('raise-ticket')
+    else:  
+        form = SignupStudent() 
+    context = {  
+        'form':form  
+    }  
+    return render(request, 'student/register.html', context) 
+
+
+
+
+# @csrf_protect
+# def register_student(request):
+#     if request.method == 'GET':
+#         form = SignupStudent()
+#         context = {'form': form}
+#         return render(request, 'student/register.html', context)
+#     if request.method == 'POST':
+#         form = SignupStudent(request.POST or None)
+#         if form.is_valid():
+#             form.save()
+#             user = form.cleaned_data.get('username')
+#             messages.success(request, 'Account was created for ' + user)
+#             return redirect('raise-ticket')
+#     else:
+#         form = SignupStudent()
+#         print('Form is invalid')
+#         messages.error(request, 'Error Processing Your Request')
+#         context = {'form': form}
+#         return render(request, 'student/register.html', context)
+#     # context={'form':form}
+#     return render(request, 'student/register.html', {'form': SignupStudent})
 
 
 class Register_officer(TemplateView):
@@ -92,7 +135,7 @@ class Raise_Ticket(CreateView):
     template_name = 'student/dashboard.html'
 
     fields = ('ticket_name', 'ticket_type',
-              'ticket_status', 'ticket_description')
+              'ticket_status', 'ticket_description','reg_no')
 
 
 class My_Tickets(ListView):
