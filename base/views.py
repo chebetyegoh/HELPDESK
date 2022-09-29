@@ -2,17 +2,20 @@ from contextlib import redirect_stderr
 from email import message
 from multiprocessing import context
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import TemplateView, CreateView, ListView, DetailView
 from django.urls import reverse_lazy
 from .models import Ticket, Student, Officer
 from django.views.decorators.csrf import csrf_protect
-from .forms import SignupStudent, LoginStudentForm
+from .forms import SignupStudent, LoginStudentForm, MyChangeFormPassword
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.views.decorators.csrf import csrf_exempt
-from .models import Users
+from .models import Users, StudentProfile
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -45,7 +48,7 @@ def login_student(request):
             if user is not None:
                 login(request, user)
             
-                messages.info(request, 'logged-in!')           
+                messages.info(request, 'You have successfully logged in!')           
                 return redirect('raise-ticket')
             else:
                 messages.error(request,"Invalid username or password.")
@@ -83,7 +86,9 @@ def register_student(request):
     if request.method == 'POST':  
         form = SignupStudent(request.POST or None)  
         if form.is_valid():  
-            form.save()  
+            form.save() 
+            user = form.cleaned_data.get('username')
+            messages.info(request, 'Account was created successfully for ' + user)
             return redirect('raise-ticket')
     else:  
         form = SignupStudent() 
@@ -130,12 +135,13 @@ class Login_admin(TemplateView):
     template_name = 'admin/login.html'
 
 
-class Raise_Ticket(CreateView):
+class Raise_Ticket(SuccessMessageMixin,CreateView):
     model = Ticket
     template_name = 'student/dashboard.html'
+    success_message = "Ticket was created successfully"
 
     fields = ('ticket_name', 'ticket_type',
-              'ticket_status', 'ticket_description','reg_no')
+              'ticket_status', 'ticket_description',)
 
 
 class My_Tickets(ListView):
@@ -148,8 +154,27 @@ class My_Tickets(ListView):
     # return super().get_queryset().order_by(self.kwargs['ticket_id'])
 
 
-class My_Account(TemplateView):
+class My_Account(ListView):
+    model = StudentProfile
     template_name = 'student/my_account.html'
+    context_object_name = 'students'
+   
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = MyChangeFormPassword(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('my-account')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = MyChangeFormPassword(request.user)
+    return render(request, 'student/change_password.html', {
+        'form': form
+    })
 
 
 class Change_Password(TemplateView):
@@ -227,3 +252,10 @@ class Close_Ticket(DetailView):
     model = Ticket
     template_name = 'officer/close_ticket.html'
     context_object_name = 'tickets'
+
+
+
+def logout_view(request):
+    logout(request)
+    messages.info(request, 'You are logged out of your account!')
+    return redirect('home')

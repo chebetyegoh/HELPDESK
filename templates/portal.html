@@ -24,8 +24,8 @@
        <label for="checkbox_toggle" class="hamburger">&#9776;</label> -->
             <!-- NAVIGATION MENUS -->
             <div class="menu">
-                <li><a href="/">Home</a></li>
-                <li><a href="/">Logout</a></li>
+                <!--<li><a href="{% url 'home'%}">Home</a></li>-->
+                <li><a href="{% url 'logout'%}">Logout</a></li>
                 <!-- <li class="services">
            <a href="/">Services</a>
             DROPDOWN MENU -->
@@ -42,7 +42,9 @@
             </div>
         </ul>
     </nav>
+    {% include 'messages.html' %}
     {%block content%}
+
     {%endblock content%}
 
     <!--<div class="footer-basic">
@@ -66,6 +68,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="/static/my_chart.js"></script>
+    <script>
+        setTimeout(function () {
+            if ($('#msg').length > 0) {
+                $('#msg').remove();
+            }
+        }, 2000)
+    </script>
 </body>
 
 </html>

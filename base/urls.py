@@ -1,18 +1,21 @@
 from re import L
 from django.urls import path
 from . import views
+from django.contrib.auth.decorators import login_required
+
 urlpatterns =[
     
     path('', views.Home.as_view(), name='home'),
     path('register/', views.register_student, name='register'),
+    path('logout/', views.logout_view, name='logout'),
     path('login/', views.login_student, name='login'),
     path('register-officer/', views.Register_officer.as_view(), name='register-officer'),
     path('login-officer/', views.Login_officer.as_view(), name='login-officer'),
     path('login-admin/',views.Login_admin.as_view(), name='login-admin'),
-    path('raise-ticket/', views.Raise_Ticket.as_view(), name='raise-ticket'),
-    path('my-tickets/', views.My_Tickets.as_view(), name='my-tickets'),
-    path('my-account/', views.My_Account.as_view(), name='my-account'),
-    path('change-password/', views.Change_Password.as_view(),name='change-password'),
+    path('raise-ticket/', login_required(views.Raise_Ticket.as_view()), name='raise-ticket'),
+    path('my-tickets/', login_required(views.My_Tickets.as_view()), name='my-tickets'),
+    path('my-account/', login_required(views.My_Account.as_view()), name='my-account'),
+    path('change-password/', views.change_password,name='change-password'),
     path('officer-dashboard/', views.Officer_Dashboard.as_view(), name='officer-dashboard'),
     path('officer-tickets/', views.Officer_Tickets.as_view(), name='officer-tickets'),
     path('officer-account/', views.Officer_Account.as_view(), name='officer-account'),

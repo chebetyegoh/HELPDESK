@@ -1,14 +1,14 @@
 from dataclasses import fields
 from django import forms
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.forms import ModelForm
 from base.models import Users, Student, StudentProfile
 from django.db import transaction
 from django.core.exceptions import ValidationError
 
 
-class SignupStudent(ModelForm):
+class SignupStudent(UserCreationForm):
     email = forms.EmailField(
         max_length=100,
         required=True,
@@ -55,6 +55,14 @@ class SignupStudent(ModelForm):
             attrs={'class': 'form-group', 'placeholder': 'Password Again', 'minlength': 8}),
     )
 
+    def firstname_clean(self):
+        first_name = self.cleaned_data['first_name']
+        return first_name
+    
+    def lastname_clean(self):
+        last_name = self.cleaned_data['last_name']
+        return last_name
+
     def username_clean(self):
         username = self.cleaned_data['username'].lower()
         new = Users.objects.filter(username=username)
@@ -66,7 +74,7 @@ class SignupStudent(ModelForm):
         email = self.cleaned_data['email'].lower()  
         new = Users.objects.filter(email=email)  
         if new.count():  
-            raise ValidationError(" Email Already Exist")  
+            raise ValidationError(" Email Already Exist") 
         return email  
 
     
@@ -115,9 +123,36 @@ class LoginStudentForm(AuthenticationForm):
         model = Users
         fields = ["username", "password"]
 
-    # def clean_username(self):
-    #     username = self.cleaned_data.get("username")
-    #     if not Users.objects.filter(username).exists():
-    #         raise forms.ValidationError(
-    #             "User with this username doesnot exist! Create an account instead")
-    #     return username
+    def username_clean(self):
+         username = self.cleaned_data.get("username").lower()
+         if not Users.objects.filter(username).exists():
+             raise forms.ValidationError(
+                 "User with this username doesnot exist! Create an account instead")
+         return username
+
+class MyChangeFormPassword(PasswordChangeForm):
+    old_password = forms.CharField(
+        help_text='Enter Password',
+        required=True,
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-group', 'placeholder': 'Current Password', 'minlength': 8}),
+    )
+
+    new_password1 = forms.CharField(
+        help_text='Enter Password',
+        required=True,
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-group', 'placeholder': ' New Password', 'minlength': 8}),
+    )
+
+    new_password2 = forms.CharField(
+        help_text='Enter Password',
+        required=True,
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-group', 'placeholder': 'Confirm Password', 'minlength': 8}),
+    )
+
+    class Meta:
+
+        model = Users
+        fields = ["old_password", "new_password1", "new_password2"]

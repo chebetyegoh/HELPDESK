@@ -1677,5 +1677,6 @@ section .contact-container .contactForm .formBox .inputBox input[type="submit"]:
     font-size: 20px;
     font-weight: 600;
     line-height: 1.5em;
+    margin: 20px;
 
 }

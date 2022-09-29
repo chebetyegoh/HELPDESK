@@ -151,12 +151,12 @@ class Ticket(models.Model):
     ]
     ticket_status = models.CharField(max_length=200, choices=StatusChoices,
         default= 'Open', blank=True)
-    reg_no = models.CharField(max_length=200, blank=False, null=True)
+    #reg_no = models.CharField(max_length=200, blank=False, null=True)
     created_at = models.DateTimeField(default=datetime.now, blank=True)
     updated_at = models.DateTimeField(default=datetime.now, blank=True)
 
     class Meta:
-        ordering = ['ticket_name']
+        ordering = ['-created_by']
 
     def get_absolute_url(self):
         return reverse('my-tickets')

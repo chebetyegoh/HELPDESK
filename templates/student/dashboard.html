@@ -14,17 +14,24 @@
     </div>
     <div class="main_content">
         <div class="header">RAISE A TICKET</div>
+        <!-- {% if messages %}
+        {% for message in messages %}
+            <div class="text-center alert {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% endif %} -->
         <form method="post" class="register-form" id="raise_ticket" action="">
             {% csrf_token %}
             <div class="info">
-                <div class="form-row">
+                <!-- <div class="form-row">
                     <div class="name">Registration Number</div>
                     <div class="value">
                         <div class="input-group">
                             <input class="input--style-5" type="" name="reg_no">
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="form-row">
                     <div class="name">Ticket Name</div>
                     <div class="value">
