@@ -1680,3 +1680,33 @@ section .contact-container .contactForm .formBox .inputBox input[type="submit"]:
     margin: 20px;
 
 }
+
+.help-is-danger{
+    color: red;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.update{
+    background-color: teal;
+    color: #f1f1f1;
+    border-radius: 25px;
+    font-weight: 600;
+
+}
+.update:hover{
+    background-color: #00AEAE;
+}
+
+.delete{
+    display: flex;
+    /* margin: 25px; */
+}
+.main-delete{
+    display: grid;
+    margin: 90px;
+}
+
+.main-delete h4 {
+    font-size: 17px;
+}

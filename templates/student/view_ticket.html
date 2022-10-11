@@ -6,7 +6,8 @@
         <h4>Menu</h4>
         <ul>
             <li><a href="{% url 'raise-ticket'%}"><i class="fa-solid fa-pen-to-square"></i>Raise a Ticket</a></li>
-            <li><a href="{% url 'my-tickets'%}"><i class="fa-solid fa-pen-to-square"></i>My Tickets</a></li>
+            <li><a href="{% url 'my-tickets' request.user.username%}"><i class="fa-solid fa-pen-to-square"></i>My
+                    Tickets</a></li>
             <li><a href="{% url 'my-account'%}"><i class="fa-solid fa-user"></i>My Account</a></li>
             <li><a href="{% url 'change-password'%}"><i class="fa-solid fa-lock"></i>Change Password</a></li>
         </ul>
@@ -19,7 +20,7 @@
 
             <div class="user-details">
                 <img src="/static/user.png">
-                <h4>{{ object.username }}<br> S13/03156/18</h4>
+                <h4> Author: {{ object.created_by.user.first_name}}<br> S13/03156/18</h4>
             </div>
 
             <span>{{ object.ticket_name}}</span>
@@ -27,10 +28,10 @@
             <p><span>Created at:</span> {{ object.created_at }}</p>
             <p>{{ object.ticket_description }}</p>
 
-
+            <a href="{% url 'update-ticket' object.ticket_id %}"><button style="background-color: teal;">Update</button></a>
+            <a href="{% url 'ticketdeleteview' object.ticket_id%}"><button style="background-color: red;">Delete</button></a>
 
         </div>
-
         <div>
 
         </div>

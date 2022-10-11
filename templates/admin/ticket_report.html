@@ -26,77 +26,29 @@
                             <th>Ticket Type</th>
                             <th>Ticket Description</th>
                             <th>Ticket Status</th>
+                            <th>Created At</th>
                             <th>Created By</th>
+                            <th>Closed By</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for ticket in object_list %}
                         <tr>
-                            <td>0001</td>
-                            <td>Remarking</td>
-                            <td>High</td>
-                            <td>I would like remarking of my COMP 473 exam</td>
-                            <td>Open</td>
-                            <td>Damaris</td>
+
+                            <td>{{ ticket.ticket_id }}</td>
+                            <td>{{ ticket.ticket_name }}</td>
+                            <td>{{ ticket.ticket_type }}</td>
+                            <td>{{ ticket.ticket_description }}</td>
+                            <td style="font-weight: 600;">{{ ticket.ticket_status }}</td>
+                            <td>{{ ticket.created_at}}</td>
+                            <td>{{ ticket.created_by.user.username }}</td>
+                            <td>{{ ticket.closed_by.user.username }}</td>
                             <td>
-                                <button><i class="fa-solid fa-trash"></i></button>
+                                <a href="{% url 'adminticketdeleteview' ticket.ticket_id%}"><button style="background-color: red;"><i class="fa-solid fa-trash"></i></button></a>
                             </td>
                         </tr>
-                        <tr>
-                            <td>0001</td>
-                            <td>Remarking</td>
-                            <td>High</td>
-                            <td>I would like remarking of my COMP 473 exam</td>
-                            <td>Open</td>
-                            <td>Damaris</td>
-                            <td>
-                                <button><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>0001</td>
-                            <td>Remarking</td>
-                            <td>High</td>
-                            <td>I would like remarking of my COMP 473 exam</td>
-                            <td>Open</td>
-                            <td>Damaris</td>
-                            <td>
-                                <button><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>0001</td>
-                            <td>Remarking</td>
-                            <td>High</td>
-                            <td>I would like remarking of my COMP 473 exam</td>
-                            <td>Open</td>
-                            <td>Damaris</td>
-                            <td>
-                                <button><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>0001</td>
-                            <td>Remarking</td>
-                            <td>High</td>
-                            <td>I would like remarking of my COMP 473 exam</td>
-                            <td>Open</td>
-                            <td>Damaris</td>
-                            <td>
-                                <button><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>0001</td>
-                            <td>Remarking</td>
-                            <td>High</td>
-                            <td>I would like remarking of my COMP 473 exam</td>
-                            <td>Open</td>
-                            <td>Damaris</td>
-                            <td>
-                                <button><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

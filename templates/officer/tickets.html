@@ -40,7 +40,7 @@
 
                             <td>
                                 <a href="{%url 'close-ticket' ticket.ticket_id %}"><button>View</button></a>
-                                <button><i class="fa-solid fa-trash"></i></button>
+                                <a href="{% url 'officerticketdeleteview' ticket.ticket_id%}"><button style="background-color: red;"><i class="fa-solid fa-trash"></i></button></a>
                             </td>
                         </tr>
                         {% endfor %}

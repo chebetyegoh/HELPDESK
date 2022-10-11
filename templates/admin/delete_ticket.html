@@ -1,5 +1,5 @@
 {% extends 'portal.html'%}
-{% load static %}
+{% load static%}
 {% block content %}
 <div class="wrapper">
     <div class="sidebar">
@@ -11,32 +11,23 @@
             <li><a href="{% url 'officers-list' %}"><i class="fa-solid fa-pen-to-square"></i>Officer Report</a></li>
             <li><a href="{% url 'admin-change-password' %}"><i class="fa-solid fa-lock"></i>Change Password</a></li>
             <li><a href="{% url 'create-officer-account' %}"><i class="fa-solid fa-user"></i>Create Officer Account</a></li>
-
+            
         </ul>
-    </div>
-    <div class="main_content">
-        <div class="header">DASHBOARD</div>
-        <div class="ticket-stat">
-            <div>
-                <span>Total tickets</span>
-                <p>{{ ticket_count }}</p>
-            </div>
-            <div>
-                <span>Open Tickets</span>
-                <p>{{ open_tickets }}</p>
-            </div>
-            <div>
-                <span>Closed Tickets</span>
-                <p>{{ closed_tickets }}</p>
-            </div>
-            <div>
-                <span>Ticket Resolution</span>
-                <p>{{ ticket_resolution }} %</p>
-            </div>
-        </div>
-        <div class="dashboard-button">
-            <button class="btn grn-btn"><a href="{% url 'graph' %}" style="color: #fff;">View Report</a></button>
-        </div>
-    </div>
+    <div class="main-delete">
+        <h4>Are you sure you want to delete the ticket <span style="font-weight: 600; margin-left: 4px;"> {{object.ticket_name}}</span> ?</h4>
 
-    {% endblock content %}
+        <div class="delete">
+            <form action="" method="post">
+                {%csrf_token%}
+                <a href=""></a><button style=" background-color: red;" type="submit">Yes, I'm sure</button>
+
+            </form>
+            <!-- <input -->
+            <!-- style="background-color:teal; width: 70px; height: 25px; text-align: right; border-radius: 15px; margin: 15px; font-size: 15px;" -->
+            <!-- type="submit" value="Yes" /> -->
+            <a href=""><button style="background-color: teal ; margin-left: 20px;">No,take me
+                    back</button></a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

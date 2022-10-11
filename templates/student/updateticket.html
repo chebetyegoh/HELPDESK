@@ -7,13 +7,14 @@
         <h4>Menu</h4>
         <ul>
             <li><a href="{% url 'raise-ticket'%}"><i class="fa-solid fa-pen-to-square"></i>Raise a Ticket</a></li>
-            <li><a href="{% url 'my-tickets' request.user.username %}"><i class="fa-solid fa-pen-to-square"></i>My Tickets</a></li>
+            <li><a href="{% url 'my-tickets' request.user.username %}"><i class="fa-solid fa-pen-to-square"></i>My
+                    Tickets</a></li>
             <li><a href="{% url 'my-account'%}"><i class="fa-solid fa-user"></i>My Account</a></li>
             <li><a href="{% url 'change-password'%}"><i class="fa-solid fa-lock"></i>Change Password</a></li>
         </ul>
     </div>
     <div class="main_content">
-        <div class="header">RAISE A TICKET</div>
+        <div class="header">UPDATE TICKET</div>
         <!-- {% if messages %}
         {% for message in messages %}
             <div class="text-center alert {{ message.tags }}">
@@ -66,7 +67,7 @@
                 </div>
                 <div class="form-group form-button">
                     <input type="submit" name="raise_ticket" id="raise_ticket" class="form-submit"
-                        value="Raise ticket" />
+                        value="Update ticket" />
                 </div>
             </div>
         </form>

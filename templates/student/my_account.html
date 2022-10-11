@@ -6,7 +6,7 @@
         <h4>Menu</h4>
         <ul>
             <li><a href="{% url 'raise-ticket'%}"><i class="fa-solid fa-pen-to-square"></i>Raise a Ticket</a></li>
-            <li><a href="{% url 'my-tickets'%}"><i class="fa-solid fa-pen-to-square"></i>My Tickets</a></li>
+            <li><a href="{% url 'my-tickets' request.user.username%}"><i class="fa-solid fa-pen-to-square"></i>My Tickets</a></li>
             <li><a href="{% url 'my-account'%}"><i class="fa-solid fa-user"></i>My Account</a></li>
             <li><a href="{% url 'change-password'%}"><i class="fa-solid fa-lock"></i>Change Password</a></li>
         </ul> 
@@ -24,16 +24,14 @@
             </div>
 
             <span></span>
-            <p><span>Reg No. :</span>S13/03159/18 </p>
+            <p><span>Username :</span>{{student.user.username}} </p>
             <p><span>Email:</span>{{ student.user.email}}</p>
             {%endif%}
             {%endfor%}
     
         </div>
         <div class="form-group form-button">
-            <input  type="submit" name="update-profile" id="update-profile" class="form-submit"
-                value="Update Profile" />
-        </div>  
+            <a href="{%url 'update-profile' %}"><button class="update">Update Profile</button></a>
     </div>
 
 {% endblock content %}

@@ -1,11 +1,12 @@
 from datetime import datetime
 from django.db import models
 from django.urls import reverse
-from django.contrib.auth.models import AbstractUser,BaseUserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 # Create your models here.
+
 
 class Users(AbstractUser):
 
@@ -16,7 +17,8 @@ class Users(AbstractUser):
 
     # base_role = Role.ADMIN
 
-    role = models.CharField(max_length=50, choices=Role.choices, default='STUDENT' )
+    role = models.CharField(
+        max_length=50, choices=Role.choices, default='STUDENT')
 
 # @receiver(post_save, sender=Users)
 # def create_user_profile(sender, instance, created, **kwargs):
@@ -26,7 +28,7 @@ class Users(AbstractUser):
     #     if not self.pk:
     #         self.role = self.base_role
     #         return super().save(*args, **kwargs)
-    
+
 #    # id = models.AutoField(primary_key = True)
 #     username = models.CharField(max_length=20, unique="True", blank=False)
 #     is_student = models.BooleanField(default=False)
@@ -49,25 +51,17 @@ class Student(Users):
         proxy = True
 
 
-
-
 class StudentProfile(models.Model):
-    user = models.OneToOneField(Users, on_delete=models.CASCADE)
-    student_id = models.IntegerField(null=True, blank=True)
-
-
-
-
-
-
-
-
+    user = models.OneToOneField(
+        Users, on_delete=models.CASCADE, related_name='student_set')
+    student_id = models.AutoField(primary_key=True)
 
 
 class OfficerManager(BaseUserManager):
     def get_queryset(self, *args, **kwargs):
         results = super().get_queryset(*args, **kwargs)
         return results.filter(role=Users.Role.OFFICER)
+
 
 class Officer(Users):
 
@@ -80,16 +74,20 @@ class Officer(Users):
 
 
 class OfficerProfile(models.Model):
-    user = models.OneToOneField(Users, on_delete=models.CASCADE)
-    officer_id = models.IntegerField(null=True, blank=True)
-    phone_number = models.CharField(max_length=100, blank=False, null=True, unique=True)
-
+    user = models.OneToOneField(
+        Users, on_delete=models.CASCADE, related_name='officer_set')
+    officer_id = models.AutoField(primary_key=True)
+    phone_number = models.CharField(
+        max_length=100, blank=False, null=True, unique=True)
 
 
 @receiver(post_save, sender=Users)
 def create_user_profile(sender, instance, created, **kwargs):
-     if created and instance.role == "STUDENT":
+    if created and instance.role == "STUDENT":
         StudentProfile.objects.create(user=instance)
+   
+
+
 
 @receiver(post_save, sender=Users)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -137,8 +135,10 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 class Ticket(models.Model):
     ticket_id = models.AutoField(primary_key=True)
-    created_by = models.ForeignKey(Student, on_delete= models.CASCADE, null=True,related_name = 'created_by')
-    closed_by = models.ForeignKey(Officer, on_delete= models.CASCADE, null=True, related_name = 'closed_by')
+    created_by = models.ForeignKey(
+        StudentProfile, on_delete=models.CASCADE, null=True, related_name='created_by')
+    closed_by = models.ForeignKey(
+        OfficerProfile, on_delete=models.CASCADE, null=True, related_name='closed_by')
     ticket_name = models.CharField(max_length=200, blank=True)
     ticket_type = models.CharField(max_length=200, blank=True)
     ticket_description = models.TextField(max_length=200, blank=True)
@@ -150,17 +150,16 @@ class Ticket(models.Model):
         ('Deferred', 'Deferred'),
     ]
     ticket_status = models.CharField(max_length=200, choices=StatusChoices,
-        default= 'Open', blank=True)
+                                     default='Open', blank=True)
     #reg_no = models.CharField(max_length=200, blank=False, null=True)
     created_at = models.DateTimeField(default=datetime.now, blank=True)
     updated_at = models.DateTimeField(default=datetime.now, blank=True)
 
     class Meta:
-        ordering = ['-created_by']
+        ordering = ['-created_at']
 
     def get_absolute_url(self):
         return reverse('my-tickets')
 
     def __str__(self):
         return f'{self.ticket_name}'
-    

@@ -8,30 +8,37 @@
             <div class="signup-content">
                 <div class="signup-form">
                     <h2 class="form-title">Sign up</h2>
-                    <form method="POST" class="register-form" id="register-form" action="" enctype="multipart/form-data">
+                    <form method="POST" class="register-form" id="register-form" action=""
+                        enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="First name"><i class="fa-solid fa-user"></i></label>
                             {{form.first_name}}
-                            {{ form.errors }} 
-                            {{ form.non_field_errors}}
+                            <!-- {{ form.non_field_errors}} -->
                             <!--<input type="text" name="first_name" id="first_name" placeholder="Your First Name" />-->
                         </div>
+                        {% for error in form.first_name.errors%}
+                            <p class="help-is-danger">{{error}}</p>
+                        {% endfor%}
                         <div class="form-group">
                             <label for="Last name"><i class="fa-solid fa-user"></i></label>
                             {{form.last_name}}
-                            {{ form.errors }} 
-                            {{ form.non_field_errors}}
+                            <!-- {{ form.non_field_errors}} -->
                             <!--<input type="text" name="last_name" id="last_name" placeholder="Your Last Name" />-->
                         </div>
+                        {% for error in form.last_name.errors%}
+                            <p class="help-is-danger">{{error}}</p>
+                        {% endfor%}
 
                         <div class="form-group">
                             <label for="Username"><i class="fa-solid fa-user"></i></label>
                             {{form.username}}
-                            {{ form.errors }} 
-                            {{ form.non_field_errors}}
+                            <!-- {{ form.non_field_errors}} -->
                             <!--<input type="text" name="username" id="username" placeholder="Your Username" />-->
                         </div>
+                        {% for error in form.username.errors%}
+                            <p class="help-is-danger">{{error}}</p>
+                        {% endfor%}
                         <!--<div class="form-group">
                             <label for="reg_no"><i class="fa-solid fa-hashtag"></i></label>
                             {{form.reg_no}}
@@ -40,24 +47,30 @@
                         <div class="form-group">
                             <label for="email"><i class="fa-solid fa-envelope"></i></label>
                             {{form.email}}
-                            {{ form.errors }} 
-                            {{ form.non_field_errors}}
+                            <!-- {{ form.non_field_errors}} -->
                             <!--<input type="email" name="email" id="email" placeholder="Your Email" />-->
                         </div>
+                        {% for error in form.email.errors%}
+                            <p class="help-is-danger">{{error}}</p>
+                        {% endfor%}
                         <div class="form-group">
                             <label for="pass"><i class="fa-solid fa-lock"></i></label>
                             {{form.password1}}
-                            {{ form.errors }} 
-                            {{ form.non_field_errors}}
+                            <!-- {{ form.non_field_errors}} -->
                             <!--<input type="password" name="password" id="pass" placeholder="Password" />-->
                         </div>
                         <div class="form-group">
                             <label for="re-pass"><i class="fa-solid fa-lock"></i></label>
                             {{form.password2}}
-                            {{ form.errors }} 
-                            {{ form.non_field_errors}}
+                            <!-- {{ form.non_field_errors}} -->
                             <!--<input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password" />-->
                         </div>
+                        {% for error in form.password2.errors %}
+                            <p class="help-is-danger">{{error}}</p>
+                        {% endfor%}
+                        <!-- {% for error in form.password2.errors%}
+                        <p class="help is-danger">{{error}}</p>
+                        {% endfor%} -->
                         <div class="form-group">
                             <label for="agree-term" class="label-agree-term"><span><span></span></span>By signing up you
                                 agree to our <a href="{% url 'terms' %}" class="term-service">Terms of
