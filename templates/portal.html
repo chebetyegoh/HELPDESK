@@ -66,8 +66,18 @@
     </div>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript"  src="http://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script src="/static/my_chart.js"></script>
+    <script>
+        $(document).ready(function(){
+          $('#myTable').dataTable();
+        });
+      </script>
+    <!-- <script>
+        var open_tickets = "{{ open_tickets }}";
+        var closed_tickets = "{{ closed_tickets }}";
+    </script> -->
     <script>
         setTimeout(function () {
             if ($('#msg').length > 0) {

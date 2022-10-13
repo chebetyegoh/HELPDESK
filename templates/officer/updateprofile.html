@@ -1,0 +1,74 @@
+{% extends 'portal.html'%}
+{% load static%}
+{% block content %}
+<div class="wrapper">
+    <div class="sidebar">
+        <h4>Menu</h4>
+        <ul>
+            <li><a href="{% url 'officer-dashboard'%}"><i class="fa-solid fa-qrcode"></i>Dashboard</a></li>
+            <li><a href="{% url 'officer-tickets'%}"><i class="fa-solid fa-pen-to-square"></i>Tickets</a></li>
+            <li><a href="{% url 'officer-account'%}"><i class="fa-solid fa-user"></i>My Account</a></li>
+            <li><a href="{% url 'officer-change-password'%}"><i class="fa-solid fa-lock"></i>Change Password</a></li>
+        </ul>
+    </div>
+    <div class="main_content">
+        <div class="header">UPDATE PROFILE</div>
+        <form method="POST" class="register-form" id="change_password" action="">
+            {% csrf_token %}
+            <div class="info">
+                <div class="form-group">
+                    <label for="First name"><i class="fa-solid fa-user"></i></label>
+                    {{form.first_name}}
+                    <!-- {{ form.non_field_errors}} -->
+                    <!--<input type="text" name="first_name" id="first_name" placeholder="Your First Name" />-->
+                </div>
+                {% for error in form.first_name.errors%}
+                <p class="help-is-danger">{{error}}</p>
+                {% endfor%}
+                <div class="form-group">
+                    <label for="Last name"><i class="fa-solid fa-user"></i></label>
+                    {{form.last_name}}
+                    <!-- {{ form.non_field_errors}} -->
+                    <!--<input type="text" name="last_name" id="last_name" placeholder="Your Last Name" />-->
+                </div>
+                {% for error in form.last_name.errors%}
+                <p class="help-is-danger">{{error}}</p>
+                {% endfor%}
+
+                <div class="form-group">
+                    <label for="Username"><i class="fa-solid fa-user"></i></label>
+                    {{form.username}}
+                    <!-- {{ form.non_field_errors}} -->
+                    <!--<input type="text" name="username" id="username" placeholder="Your Username" />-->
+                </div>
+                {% for error in form.username.errors%}
+                <p class="help-is-danger">{{error}}</p>
+                {% endfor%}
+                <!--<div class="form-group">
+                    <label for="reg_no"><i class="fa-solid fa-hashtag"></i></label>
+                    {{form.reg_no}}
+                    <input type="text" name="reg_no" id="reg_no" placeholder="Your Registration Number" />
+                </div>-->
+                <div class="form-group">
+                    <label for="email"><i class="fa-solid fa-envelope"></i></label>
+                    {{form.email}}
+                    <!-- {{ form.non_field_errors}} -->
+                    <!--<input type="email" name="email" id="email" placeholder="Your Email" />-->
+                </div>
+                {% for error in form.email.errors%}
+                <p class="help-is-danger">{{error}}</p>
+                {% endfor%}
+
+                <div class="form-group form-button">
+                    <input type="submit" name="update-profile" id="update-profile" class="form-submit"
+                        value="Update" ><input>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    {% endblock content %}
+
+
+

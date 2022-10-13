@@ -17,17 +17,24 @@
 
             <div class="user-details">
                 <img src="/static/user.png">
-                <h4>Damaris Jebet<br> S13/03159/18</h4>
+                <h4> Author: {{tickets.created_by.user.first_name}} {{tickets.created_by.user.last_name}}<br>{{tickets.created_by.user.username}}</h4>
             </div>
 
-            <span>{{ object.ticket_name}}</span>
-            <p><span>Ticket Status:</span> {{object.ticket_status}}</p>
-            <p><span>Created at:</span> {{object.created_at}}</p>
-            <p>{{ object.ticket_description}}</p>
+            <span>{{ tickets.ticket_name}}</span>
+            <p><span>Ticket Status:</span> {{tickets.ticket_status}}</p>
+            <p><span>Created at:</span> {{tickets.created_at}}</p>
+            <p>{{ tickets.ticket_description}}</p>
 
         </div>
         <div class="form-group form-button">
-            <input type="submit" name="signup" id="signup" class="form-submit" value="Close Ticket" />
+            <form action="" method="post" >
+                {% csrf_token %}
+                <input type="hidden" value="Closed" />
+                <input type="submit" name="close" id="signup" class="form-submit" value="Close Ticket" />
+                
+
+            </form>
+            
         </div>
     </div>
 </div>

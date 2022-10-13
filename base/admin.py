@@ -31,12 +31,14 @@ class TicketAdmin(admin.ModelAdmin):
 
 @admin.register(OfficerProfile)
 class OfficerProfileAdmin(admin.ModelAdmin):
-     list_display=('user','get_email','firstname','lastname', 'phone_number')
+     list_display=('user','get_email','firstname','lastname', 'phone_number', 'id')
      def get_email(self, obj):
         return obj.user.email
      def firstname(self,obj):
           return obj.user.first_name
      def lastname(self,obj):
           return obj.user.last_name
+
+
 
 #admin.site.register(Student,StudentAdmin)

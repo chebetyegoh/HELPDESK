@@ -1,0 +1,66 @@
+{% extends 'portal.html'%}
+{% load static %}
+{% block content %}
+<div class="wrapper">
+    <div class="sidebar">
+        <h4>Menu</h4>
+        <ul>
+            <li><a href="{% url 'admin-dashboard' %}"><i class="fa-solid fa-qrcode"></i>Dashboard</a></li>
+            <li><a href="{% url 'ticket-report' %}"><i class="fa-solid fa-pen-to-square"></i>Ticket Report</a></li>
+            <li><a href="{% url 'student-report' %}"><i class="fa-solid fa-pen-to-square"></i>Student Report</a></li>
+            <li><a href="{% url 'officers-list' %}"><i class="fa-solid fa-pen-to-square"></i>Officer Report</a></li>
+            <li><a href="{% url 'admin-change-password' %}"><i class="fa-solid fa-lock"></i>Change Password</a></li>
+            <!-- <li><a href="{% url 'create-officer-account' %}"><i class="fa-solid fa-user"></i>Create Officer Account</a></li> -->
+            
+        </ul>
+    </div>
+    <div class="main_content">
+        <div class="header">TICKET REPORT</div>
+        <div class="table">
+            <div class="table_section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ticket ID</th>
+                            <th>Ticket Name</th>
+                            <th>Ticket Type</th>
+                            <th>Ticket Description</th>
+                            <th>Ticket Status</th>
+                            <th>Created At</th>
+                            <th>Created By</th>
+                            <th>Closed By</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ticket in object_list %}
+                        <tr>
+
+                            <td>{{ ticket.ticket_id }}</td>
+                            <td>{{ ticket.ticket_name }}</td>
+                            <td>{{ ticket.ticket_type }}</td>
+                            <td>{{ ticket.ticket_description }}</td>
+                            <td style="font-weight: 600;">{{ ticket.ticket_status }}</td>
+                            <td>{{ ticket.created_at}}</td>
+                            <td>{{ ticket.created_by.user.username }}</td>
+                            <td>{{ ticket.closed_by.user.username }}</td>
+                            <td>
+                                <a href="{% url 'adminticketdeleteview' ticket.ticket_id%}"><button style="background-color: red;"><i class="fa-solid fa-trash"></i></button></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination">
+                <div><i class="fa-solid fa-angle-left"></i></div>
+                <div><i class="fa-solid fa-chevron-left"></i></div>
+                <div>1</div>
+                <div>2</div>
+                <div><i class="fa-solid fa-angle-right"></i></div>
+                <div><i class="fa-solid fa-chevron-right"></i></div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock content %}

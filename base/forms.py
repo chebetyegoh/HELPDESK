@@ -234,7 +234,7 @@ class RaiseTicketForm(forms.ModelForm):
         required=True,
         help_text='Enter Ticket Description',
         widget=forms.TextInput(
-            attrs={'class': 'input--style-5', 'placeholder': 'Ticket Description'}),
+            attrs={'class': 'input--style-5', 'placeholder': 'Ticket Description together with your Registration Number'}),
     )
 
     class Meta():
@@ -281,6 +281,27 @@ class EditTicketForm(forms.ModelForm):
 
 
 class LoginOfficerForm(AuthenticationForm):
+    username = forms.CharField(
+        max_length=200,
+        required=True,
+        help_text='Enter Username',
+        widget=forms.TextInput(
+            attrs={'class': 'form-group', 'placeholder': 'Username'}),
+    )
+    password = forms.CharField(
+        help_text='Enter Password',
+        required=True,
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-group', 'placeholder': 'Password', 'minlength': 8}),
+    )
+
+    class Meta:
+
+        model = Users
+        fields = ["username", "password"]
+
+
+class LoginAdminForm(AuthenticationForm):
     username = forms.CharField(
         max_length=200,
         required=True,

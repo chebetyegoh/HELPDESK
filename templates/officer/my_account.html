@@ -13,4 +13,24 @@
     </div>
     <div class="main_content">
         <div class="header">MY ACCOUNT</div>
+        <div class="view_ticket">
+
+            <div class="user-details">
+                <img src="/static/user.png">
+                {% for officer in officers %}
+                {% if officer.user  == request.user %}
+                <h4>{{ officer.user.first_name}} {{officer.user.last_name}}</h4>
+                
+            </div>
+
+            <span></span>
+            <p><span>Username :</span>{{officer.user.username}} </p>
+            <p><span>Email:</span>{{ officer.user.email}}</p>
+            <p><span>Phone Number:</span>{{ officer.phone_number}}</p>
+            {%endif%}
+            {%endfor%}
+    
+        </div>
+        
+
 {% endblock content %}

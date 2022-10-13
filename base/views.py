@@ -8,9 +8,9 @@ from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import TemplateView, CreateView, ListView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Ticket, Student, Officer
+from .models import OfficerProfile, Ticket, Student, Officer
 from django.views.decorators.csrf import csrf_protect
-from .forms import SignupStudent, LoginStudentForm, MyChangeFormPassword, EditProfile, RaiseTicketForm, LoginOfficerForm
+from .forms import SignupStudent, LoginStudentForm, MyChangeFormPassword, EditProfile, RaiseTicketForm, LoginOfficerForm, LoginAdminForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.decorators.csrf import csrf_exempt
@@ -19,6 +19,9 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
+from django.core import serializers
+
+# from django import form
 # Create your views here.
 
 
@@ -158,12 +161,42 @@ def login_officer(request):
     return render(request, "officer/login.html", {'form': form})
 
 
-class Login_officer(TemplateView):
-    template_name = 'officer/login.html'
+@csrf_exempt
+def login_admin(request):
+    if request.method == 'POST':
+        print('test')
+        form = LoginAdminForm(None, data=request.POST)
+        print(request.POST)
+
+        print("form is valid")
+        # username = form.cleaned_data.get('username')
+        username = request.POST['username']
+        # print(email)
+        # password = form.cleaned_data.get('password')
+        password = request.POST['password']
+        print(password)
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            type_obj = Users.objects.get(username=user.username)
+            print(type_obj)
+            if user.is_authenticated:
+                messages.info(request, 'You have successfully logged in!')
+                return redirect('admin-dashboard')
+        else:
+            # Invalid email or password. Handle as you wish
+            messages.error(request, "Invalid username or password.")
+
+# else:
+#     messages.error(request, "Invalid email or password.")
+
+    form = LoginAdminForm()
+
+    return render(request, "administrator/login22.html", {'form': form})
 
 
 class Login_admin(TemplateView):
-    template_name = 'admin/login.html'
+    template_name = 'administrator/login.html'
 
 
 # @csrf_exempt
@@ -196,7 +229,7 @@ def raise_ticket(request):
             ticket.save()
             messages.info(
                 request, 'Ticket was created successfully')
-            return redirect('my-tickets/<str:username>')
+            return redirect('raise-ticket')
     else:
         form = RaiseTicketForm()
     context = {
@@ -311,19 +344,57 @@ class TicketUpdate(UpdateView):
     success_url = reverse_lazy("raise-ticket")
 
 
+class DeleteConfirmation(ListView):
+    template_name = 'student/ticket_delete.html'
+    model = Ticket
+
+
+class Ticketdeleteview(DeleteView):
+    model = Ticket
+    template_name = "student/ticket_delete.html"
+    success_url = reverse_lazy("raise-ticket")
+
+
+class Ticket_view(DetailView):
+    template_name = 'student/view_ticket.html'
+    model = Ticket
+    context_object_name = 'tickets'
+
 
 def officer_dashboard(request):
     ticket_count = Ticket.objects.all().count()
-    open_tickets = Ticket.objects.filter(ticket_status = 'Open').count()
-    closed_tickets = Ticket.objects.filter(ticket_status = 'Closed').count()
-    ticket_resolution = (closed_tickets/ticket_count)*100
+    open_tickets = Ticket.objects.filter(ticket_status='Open').count()
+    closed_tickets = Ticket.objects.filter(ticket_status='Closed').count()
+    if ticket_count == 0:
+        ticket_resolution = 0
+    else:
+        ticket_resolution = int((closed_tickets/ticket_count)*100)
     context = {
-            'open_tickets': open_tickets,
-            'ticket_count': ticket_count,
-            'closed_tickets': closed_tickets,
-            'ticket_resolution': ticket_resolution,
-        }
+        'open_tickets': open_tickets,
+        'ticket_count': ticket_count,
+        'closed_tickets': closed_tickets,
+        'ticket_resolution': ticket_resolution,
+    }
     return render(request, 'officer/dashboard.html', context=context)
+
+
+@login_required
+def change_password_officer(request):
+    if request.method == 'POST':
+        form = MyChangeFormPassword(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(
+                request, 'Your password was successfully updated!')
+            return redirect('officer-account')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = MyChangeFormPassword(request.user)
+    return render(request, 'officer/change_password.html', {
+        'form': form
+    })
 
 
 class Officer_Tickets(ListView):
@@ -331,47 +402,173 @@ class Officer_Tickets(ListView):
     template_name = 'officer/tickets.html'
 
 
-class Officer_Account(TemplateView):
+class OfficerTicketdeleteview(ListView):
+    model = Ticket
+    template_name = "officer/delete_ticket.html"
+
+
+class OfficerTicketdeleteview(DeleteView):
+    model = Ticket
+    template_name = "officer/delete_ticket.html"
+    success_url = reverse_lazy("officer-tickets")
+
+
+class Close_Ticket(DetailView):
+    model = Ticket
+    template_name = 'officer/close_ticket.html'
+    context_object_name = 'tickets'
+
+
+def close_ticket(request, pk):
+    ticket = Ticket.objects.get(ticket_id=pk)
+    if request.method == "POST":
+        ticket = Ticket.objects.get(ticket_id=pk)
+        ticket.ticket_status = "Closed"
+        officer_obj = get_object_or_404(OfficerProfile, user=request.user)
+        ticket.closed_by = officer_obj
+        ticket.save()
+        tickets = Ticket.objects.all()
+        context = {
+            "object_list": tickets
+        }
+        return render(request, 'officer/tickets.html', context)
+    context = {
+        "tickets": ticket
+    }
+
+    return render(request, 'officer/close_ticket.html', context)
+
+
+# def close_ticket(request, pk):
+#     ticket = Ticket.objects.get(ticket_id=pk)
+#     if request.method == "POST":
+#         ticket = Ticket.objects.get(ticket_id=pk)
+#         ticket.ticket_status = "Closed"
+#         # ticket.save()
+#         officer_obj = get_object_or_404(OfficerProfile, user=request.user)
+#         ticket = officer_obj
+#         ticket.save()
+#         tickets = Ticket.objects.all()
+
+#         context = {
+#             "object_list": tickets
+#         }
+#         messages.info(
+#             request, 'Ticket was closed successfully')
+#         return render(request, 'officer/tickets.html', context)
+#     context = {
+#         "tickets": ticket
+#     }
+
+#     return render(request, 'officer/close_ticket.html', context)
+
+
+class Officer_Account(ListView):
+    model = OfficerProfile
     template_name = 'officer/my_account.html'
+    context_object_name = 'officers'
 
 
 class Officer_Change_Password(TemplateView):
     template_name = 'officer/change_password.html'
 
 
-
 def admin_dashboard(request):
     ticket_count = Ticket.objects.all().count()
-    open_tickets = Ticket.objects.filter(ticket_status = 'Open').count()
-    closed_tickets = Ticket.objects.filter(ticket_status = 'Closed').count()
-    ticket_resolution = (closed_tickets/ticket_count)*100
+    open_tickets = Ticket.objects.filter(ticket_status='Open').count()
+    closed_tickets = Ticket.objects.filter(ticket_status='Closed').count()
+    if ticket_count == 0:
+        ticket_resolution = 0
+    else:
+        ticket_resolution = int((closed_tickets/ticket_count)*100)
+    
     context = {
-            'open_tickets': open_tickets,
-            'ticket_count': ticket_count,
-            'closed_tickets': closed_tickets,
-            'ticket_resolution': ticket_resolution,
-        }
-    return render(request, 'admin/dashboard.html', context=context)
+        'open_tickets': open_tickets,
+        'ticket_count': ticket_count,
+        'closed_tickets': closed_tickets,
+        'ticket_resolution': ticket_resolution,
+    }
+    return render(request, 'administrator/dashboard.html', context=context)
+
+
+@login_required
+def change_password_admin(request):
+    if request.method == 'POST':
+        form = MyChangeFormPassword(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(
+                request, 'Your password was successfully updated!')
+            return redirect('admin-dashboard')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = MyChangeFormPassword(request.user)
+    return render(request, 'administrator/change_password.html', {
+        'form': form
+    })
+
+
+class Graph(TemplateView):
+    template_name = 'administrator/graph.html'
+
+
+def graph(request):
+    open_tickets_json = serializers.serialize("json", Ticket.objects.filter(ticket_status='Open'), ensure_ascii=False)
+    open_tickets = len(open_tickets_json)
+    closed_tickets_json = serializers.serialize("json", Ticket.objects.filter(ticket_status='Closed'), ensure_ascii=False)
+    closed_tickets = len(closed_tickets_json)
+    
+    context = {
+        'open_ticket': open_tickets,
+        'closed_tickets': closed_tickets,
+    }
+    return render(request,  'administrator/graph.html', context)
 
 class Admin_Ticket_Report(ListView):
     model = Ticket
-    template_name = 'admin/ticket_report.html'
+    template_name = 'administrator/ticket_report.html'
 
 
 class Admin_Change_Password(TemplateView):
-    template_name = 'admin/change_password.html'
+    template_name = 'administrator/change_password.html'
 
 
 class Register_Officer(TemplateView):
-    template_name = 'admin/register_officer.html'
+    template_name = 'administrator/register_officer.html'
 
 
-class Officers_List(TemplateView):
-    template_name = 'admin/officers_list.html'
+class Officers_List(ListView):
+    model = OfficerProfile
+    template_name = 'administrator/officers_list.html'
 
 
-class Admin_Student_report(TemplateView):
-    template_name = 'admin/student_report.html'
+class Admin_Student_report(ListView):
+    model = StudentProfile
+    template_name = 'administrator/student_report.html'
+
+
+class AdminTicketdeleteview(ListView):
+    model = Ticket
+    template_name = "administrator/delete_ticket.html"
+
+
+class AdminStudentdeleteview(ListView):
+    model = StudentProfile
+    template_name = "administrator/delete_student.html"
+
+
+class AdminStudentdeleteview(DeleteView):
+    model = StudentProfile
+    template_name = "administrator/delete_student.html"
+    success_url = reverse_lazy("student-report")
+
+
+class AdminTicketdeleteview(DeleteView):
+    model = Ticket
+    template_name = "administrator/delete_ticket.html"
+    success_url = reverse_lazy("ticket-report")
 
 
 class About(TemplateView):
@@ -388,22 +585,6 @@ class Contact_us(TemplateView):
 
 class Terms(TemplateView):
     template_name = 'terms.html'
-
-
-class Graph(TemplateView):
-    template_name = 'admin/graph.html'
-
-
-class Ticket_view(DetailView):
-    template_name = 'student/view_ticket.html'
-    model = Ticket
-    context_object_name = 'tickets'
-
-
-class Close_Ticket(DetailView):
-    model = Ticket
-    template_name = 'officer/close_ticket.html'
-    context_object_name = 'tickets'
 
 
 # def delete_ticket(request,pk):
@@ -428,33 +609,9 @@ def logout_view(request):
     return redirect('home')
 
 
-class DeleteConfirmation(ListView):
-    template_name = 'student/ticket_delete.html'
-    model = Ticket
+# json_serializer = serializers.get_serializer("json")()
 
+tickets_json = serializers.serialize("json", Ticket.objects.filter(ticket_status='Open'), ensure_ascii=False)
+open_ticket = len(tickets_json)
 
-class Ticketdeleteview(DeleteView):
-    model = Ticket
-    template_name = "student/ticket_delete.html"
-    success_url = reverse_lazy("raise-ticket")
-
-
-class OfficerTicketdeleteview(ListView):
-    model = Ticket
-    template_name = "officer/delete_ticket.html"
-
-
-class OfficerTicketdeleteview(DeleteView):
-    model = Ticket
-    template_name = "officer/delete_ticket.html"
-    success_url = reverse_lazy("officer-tickets")
-
-class AdminTicketdeleteview(ListView):
-    model = Ticket
-    template_name = "admin/delete_ticket.html"
-
-
-class AdminTicketdeleteview(DeleteView):
-    model = Ticket
-    template_name = "admin/delete_ticket.html"
-    success_url = reverse_lazy("ticket-report")
+# open_tickets = json_serializer.serialize(len(Ticket.objects.filter(ticket_status='Open')), ensure_ascii=False)

@@ -1,9 +1,12 @@
 from datetime import datetime
+from email.policy import default
+from enum import unique
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
+from model_utils import FieldTracker
 
 # Create your models here.
 
@@ -19,6 +22,8 @@ class Users(AbstractUser):
 
     role = models.CharField(
         max_length=50, choices=Role.choices, default='STUDENT')
+    tracker = FieldTracker()
+
 
 # @receiver(post_save, sender=Users)
 # def create_user_profile(sender, instance, created, **kwargs):
@@ -73,26 +78,52 @@ class Officer(Users):
         proxy = True
 
 
+# class OfficerProfile(models.Model):
+#     officer_id = models.IntegerField(primary_key=True, unique=True)
+#     user = models.OneToOneField(
+#         Users, on_delete=models.CASCADE, related_name='officer_set' )
+    
+#     phone_number = models.CharField(
+#         max_length=100, blank=False, null=True, unique=True)
 class OfficerProfile(models.Model):
     user = models.OneToOneField(
         Users, on_delete=models.CASCADE, related_name='officer_set')
-    officer_id = models.AutoField(primary_key=True)
-    phone_number = models.CharField(
-        max_length=100, blank=False, null=True, unique=True)
+    phone_number = models.CharField(max_length=255)
+
 
 
 @receiver(post_save, sender=Users)
 def create_user_profile(sender, instance, created, **kwargs):
     if created and instance.role == "STUDENT":
         StudentProfile.objects.create(user=instance)
-   
+    if instance.tracker.has_changed('role'):
+        if instance.role == "OFFICER":
+            owner = Users.objects.get(username=instance.username)
+
+            id = StudentProfile.objects.get(user=owner.id).student_id
+
+            StudentProfile.objects.get(student_id=id).delete()
+
+            OfficerProfile.objects.create(user=instance)
+        if instance.role == "ADMIN":
+            owner = Users.objects.get(username=instance.username)
+
+            id = StudentProfile.objects.get(user=owner.id).student_id
+
+            StudentProfile.objects.get(student_id=id).delete()
 
 
+# @receiver(post_save, sender=Users)
+# def create_user_profile(sender, instance, created, **kwargs):
+#     if created and instance.role == "OFFICER":
+#         OfficerProfile.objects.create(user=instance)
 
-@receiver(post_save, sender=Users)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created and instance.role == "OFFICER":
-        OfficerProfile.objects.create(user=instance)
+# @receiver(post_save, sender=Users)
+# def update_profiles(sender, instance, created, **kwargs):
+#     if instance.tracker.has_changed('role'):
+#         OfficerProfile.objects.create(user=instance)
+#         StudentProfile.objects.get(user=instance).delete()
+
 
 # class Student(models.Model):
 
@@ -138,7 +169,7 @@ class Ticket(models.Model):
     created_by = models.ForeignKey(
         StudentProfile, on_delete=models.CASCADE, null=True, related_name='created_by')
     closed_by = models.ForeignKey(
-        OfficerProfile, on_delete=models.CASCADE, null=True, related_name='closed_by')
+        OfficerProfile, on_delete=models.CASCADE, null=True)
     ticket_name = models.CharField(max_length=200, blank=True)
     ticket_type = models.CharField(max_length=200, blank=True)
     ticket_description = models.TextField(max_length=200, blank=True)

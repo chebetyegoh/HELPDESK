@@ -1,0 +1,33 @@
+{% extends 'portal.html'%}
+{% load static%}
+{% block content %}
+<div class="wrapper">
+    <div class="sidebar">
+        <h4>Menu</h4>
+        <ul>
+            <li><a href="{% url 'admin-dashboard' %}"><i class="fa-solid fa-qrcode"></i>Dashboard</a></li>
+            <li><a href="{% url 'ticket-report' %}"><i class="fa-solid fa-pen-to-square"></i>Ticket Report</a></li>
+            <li><a href="{% url 'student-report' %}"><i class="fa-solid fa-pen-to-square"></i>Student Report</a></li>
+            <li><a href="{% url 'officers-list' %}"><i class="fa-solid fa-pen-to-square"></i>Officer Report</a></li>
+            <li><a href="{% url 'admin-change-password' %}"><i class="fa-solid fa-lock"></i>Change Password</a></li>
+            <!-- <li><a href="{% url 'create-officer-account' %}"><i class="fa-solid fa-user"></i>Create Officer Account</a></li> -->
+            
+        </ul>
+    <div class="main-delete">
+        <h4>Are you sure you want to delete the ticket <span style="font-weight: 600; margin-left: 4px;"> {{object.ticket_name}}</span> ?</h4>
+
+        <div class="delete">
+            <form action="" method="post">
+                {%csrf_token%}
+                <a href=""></a><button style=" background-color: red;" type="submit">Yes, I'm sure</button>
+
+            </form>
+            <!-- <input -->
+            <!-- style="background-color:teal; width: 70px; height: 25px; text-align: right; border-radius: 15px; margin: 15px; font-size: 15px;" -->
+            <!-- type="submit" value="Yes" /> -->
+            <a href=""><button style="background-color: teal ; margin-left: 20px;">No,take me
+                    back</button></a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

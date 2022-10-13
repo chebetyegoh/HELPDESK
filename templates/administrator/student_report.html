@@ -1,0 +1,58 @@
+{% extends 'portal.html'%}
+{% load static %}
+{% block content %}
+<div class="wrapper">
+    <div class="sidebar">
+        <h4>Menu</h4>
+        <ul>
+            <li><a href="{% url 'admin-dashboard' %}"><i class="fa-solid fa-qrcode"></i>Dashboard</a></li>
+            <li><a href="{% url 'ticket-report' %}"><i class="fa-solid fa-pen-to-square"></i>Ticket Report</a></li>
+            <li><a href="{% url 'student-report' %}"><i class="fa-solid fa-pen-to-square"></i>Student Report</a></li>
+            <li><a href="{% url 'officers-list' %}"><i class="fa-solid fa-pen-to-square"></i>Officer Report</a></li>
+            <li><a href="{% url 'admin-change-password' %}"><i class="fa-solid fa-lock"></i>Change Password</a></li>
+            <!-- <li><a href="{% url 'create-officer-account' %}"><i class="fa-solid fa-user"></i>Create Officer Account</a></li> -->
+            
+            
+        </ul>
+    </div>
+    <div class="main_content">
+        <div class="header">STUDENTS</div>
+        <div class="table">
+            <div class="table_section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>S/N</th>
+                            <th>First Name</th>
+                            <th>Last Name </th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Joined on</th>
+                            <!-- <th>Last login</th> -->
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in object_list %}
+                        <tr>
+                            <td>{{ student.student_id }}</td>
+                            <td>{{ student.user.first_name }}</td>
+                            <td>{{ student.user.last_name }}</td>
+                            <td>{{ student.user.username }}</td>
+                            <td>{{ student.user.email }}</td>
+                            <td>{{ student.user.date_joined }}</td>
+                            <!-- <td>{{ student.user.last_login}}</td> -->
+                            <td>
+                                <a href="{% url 'studentdeleteview'  student.student_id %}"><button style="background-color: red;"><i class="fa-solid fa-trash"></i></button></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
