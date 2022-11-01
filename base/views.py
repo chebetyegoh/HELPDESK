@@ -512,6 +512,12 @@ def change_password_admin(request):
 
 class Graph(TemplateView):
     template_name = 'administrator/graph.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["open"] = Ticket.objects.filter(ticket_status = 'Open').count()
+        context["closed"] = Ticket.objects.filter(ticket_status = 'Closed').count()
+        print(context)
+        return context
 
 
 def graph(request):
@@ -529,6 +535,8 @@ def graph(request):
 class Admin_Ticket_Report(ListView):
     model = Ticket
     template_name = 'administrator/ticket_report.html'
+
+    
 
 
 class Admin_Change_Password(TemplateView):
@@ -555,12 +563,12 @@ class AdminTicketdeleteview(ListView):
 
 
 class AdminStudentdeleteview(ListView):
-    model = StudentProfile
+    model = Users
     template_name = "administrator/delete_student.html"
 
 
 class AdminStudentdeleteview(DeleteView):
-    model = StudentProfile
+    model = Users
     template_name = "administrator/delete_student.html"
     success_url = reverse_lazy("student-report")
 

@@ -15,7 +15,7 @@ urlpatterns =[
     path('raise-ticket/', login_required(views.raise_ticket), name='raise-ticket'),
     path('ticket/<int:pk>/', views.Ticket_view.as_view(), name='ticket'),
     path("deleteview/<int:pk>/",views.Ticketdeleteview.as_view(),name='ticketdeleteview'),
-    # path('my-tickets/', login_required(views.My_Tickets.as_view()), name='my-tickets'),
+    #path('my-tickets/', login_required(views.My_Tickets.as_view()), name='my-tickets'),
     #path('delete/<int:pk>/', login_required(views.delete_ticket), name='delete'),
     path('ticket-confirm/<int:pk>/', login_required(views.DeleteConfirmation.as_view()), name='ticket-confirm'),
     path('my-tickets/<str:username>/',login_required(views.listTickets), name='my-tickets'),
@@ -48,7 +48,8 @@ urlpatterns =[
     path('services/', views.Services.as_view(), name='services'),
     path('contact/', views.Contact_us.as_view(), name='contact'),
     path('terms/', views.Terms.as_view(), name='terms'),
-    path('graph/',views.graph, name='graph'),
+    # path('graph/',views.graph, name='graph'),
+     path('graph/',views.Graph.as_view(), name='graph'),
     
     
                                                  

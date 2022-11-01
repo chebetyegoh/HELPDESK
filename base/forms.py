@@ -1,9 +1,9 @@
 from dataclasses import fields
 from django import forms
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm,UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm, UserChangeForm
 from django.forms import ModelForm
-from base.models import Users, Student, StudentProfile,Ticket
+from base.models import Users, Student, StudentProfile, Ticket
 from django.db import transaction
 from django.core.exceptions import ValidationError
 
@@ -200,7 +200,6 @@ class EditProfile(UserChangeForm):
             attrs={'class': 'form-group', 'placeholder': 'Username'}),
     )
 
-
     class Meta():
 
         model = Users
@@ -208,9 +207,6 @@ class EditProfile(UserChangeForm):
             'username', 'email', 'first_name', 'last_name']
         exclude = ('password',)
 
-
-
-        
 
 class RaiseTicketForm(forms.ModelForm):
     ticket_name = forms.CharField(
@@ -234,16 +230,25 @@ class RaiseTicketForm(forms.ModelForm):
         required=True,
         help_text='Enter Ticket Description',
         widget=forms.TextInput(
-            attrs={'class': 'input--style-5', 'placeholder': 'Ticket Description together with your Registration Number'}),
+            attrs={'class': 'input--style-5', 'placeholder': 'Ticket Description '}),
+    )
+
+    reg_no = forms.CharField(
+        max_length=100,
+        required=True,
+        help_text='Enter Your Registration Number',
+        widget=forms.TextInput(
+            attrs={'class': 'input--style-5', 'placeholder': 'Registration Number'}),
     )
 
     class Meta():
 
         model = Ticket
         fields = [
-            'ticket_name', 'ticket_type', 'ticket_description',
+            'ticket_name', 'ticket_type', 'ticket_description', 'reg_no',
         ]
         exclude = ('created_by',)
+
 
 class EditTicketForm(forms.ModelForm):
 

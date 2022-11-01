@@ -10,7 +10,7 @@ var myChart = new Chart(ctx, {
         labels: ['Open Tickets','Closed Tickets'],
         datasets: [{
             label: 'Tickets Resolution',
-            data: [8, 5],
+            data: [{{open}} , {{closed}}],
             backgroundColor: [
                 '#CD0046',
                 '#130170',

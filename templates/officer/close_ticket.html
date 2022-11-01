@@ -16,8 +16,8 @@
         <div class="view_ticket">
 
             <div class="user-details">
-                <img src="/static/user.png">
-                <h4> Author: {{tickets.created_by.user.first_name}} {{tickets.created_by.user.last_name}}<br>{{tickets.created_by.user.username}}</h4>
+                <img src="/static/user.png" style="margin: 10px; width:70px; height:60px;">
+                <h4 style="margin: 10px;"> Author: {{tickets.created_by.user.first_name}} {{tickets.created_by.user.last_name}}<br>Username: {{tickets.created_by.user.username}}<br>Reg No: {{ tickets.reg_no}}</h4>
             </div>
 
             <span>{{ tickets.ticket_name}}</span>
