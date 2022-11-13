@@ -28,6 +28,7 @@ urlpatterns =[
 
     path('officer-dashboard/', views.officer_dashboard, name='officer-dashboard'),
     path('officer-tickets/', views.Officer_Tickets.as_view(), name='officer-tickets'),
+    path('officer-open-tickets/', views.Open_Tickets.as_view(), name='officer-open-tickets'),
     path('close-ticket/<int:pk>/', views.close_ticket, name='close-ticket'),
     path('officer-account/', views.Officer_Account.as_view(), name='officer-account'),
     path("officerdeleteview/<int:pk>/",views.OfficerTicketdeleteview.as_view(),name='officerticketdeleteview'),
@@ -49,7 +50,8 @@ urlpatterns =[
     path('contact/', views.Contact_us.as_view(), name='contact'),
     path('terms/', views.Terms.as_view(), name='terms'),
     # path('graph/',views.graph, name='graph'),
-     path('graph/',views.Graph.as_view(), name='graph'),
+    path('help/', views.Help.as_view(), name='help'),
+    path('graph/',views.Graph.as_view(), name='graph'),
     
     
                                                  

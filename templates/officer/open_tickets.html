@@ -29,6 +29,7 @@
                     </thead>
                     <tbody>
                         {% for ticket in object_list %}
+                        {% if ticket.ticket_status == "Open" %}
                         <tr>
 
                             <td>{{ ticket.ticket_id }}</td>
@@ -45,10 +46,12 @@
                             <td>{{ ticket.updated_at}}</td>
 
                             <td>
-                                <a href="{%url 'close-ticket' ticket.ticket_id %}"><button>View</button></a>
+                                <a href="{%url 'close-ticket' ticket.ticket_id %}"><button>Close Ticket</button></a>
                                 <!-- <a href="{% url 'officerticketdeleteview' ticket.ticket_id%}"><button style="background-color: red;"><i class="fa-solid fa-trash"></i></button></a> -->
                             </td>
                         </tr>
+                        {% endif %}
+
                         {% endfor %}
                     </tbody>
                 </table>

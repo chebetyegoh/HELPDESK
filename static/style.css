@@ -15,6 +15,9 @@ display-flex,
     display: -webkit-flex;
 }
 
+::-webkit-details-marker{
+    float: right;
+}
 /* @extend list-type-ulli; */
 list-type-ulli,
 .socials {
@@ -1213,7 +1216,7 @@ td button:nth-child(2) {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;;
+    flex-wrap: wrap;
 }
 
 .service-container .box{
@@ -1710,3 +1713,21 @@ section .contact-container .contactForm .formBox .inputBox input[type="submit"]:
 .main-delete h4 {
     font-size: 17px;
 }
+
+#btn-nav {
+    margin-right: 45px;
+    font-size: 20px;
+}
+
+.open {
+    position: absolute;
+    border-radius: 50%;
+    font-size: 13px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    margin-top: -32px;
+    margin-left: 10px;
+}
+

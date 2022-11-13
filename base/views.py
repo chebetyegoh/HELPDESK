@@ -20,6 +20,8 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core import serializers
+from django.core.mail import send_mail
+from django.conf import settings
 
 # from django import form
 # Create your views here.
@@ -222,7 +224,14 @@ class Login_admin(TemplateView):
 def raise_ticket(request):
     if request.method == 'POST':
         form = RaiseTicketForm(request.POST or None)
+
         if form.is_valid():
+            reg_no = request.POST['reg_no']
+            subject = "Ticket was created"
+            message = f'Hello A ticket from { reg_no } has been created'
+            from_email = settings.EMAIL_HOST_USER
+            recipient_list = ['asaliasali346@gmail.com']
+            send_mail(subject, message, from_email, recipient_list, fail_silently=False)
             ticket = form.save(commit=False)
             stu_obj = get_object_or_404(StudentProfile, user=request.user)
             ticket.created_by = stu_obj
@@ -402,6 +411,11 @@ class Officer_Tickets(ListView):
     template_name = 'officer/tickets.html'
 
 
+class Open_Tickets(ListView):
+    model = Ticket
+    template_name = 'officer/open_tickets.html'
+
+
 class OfficerTicketdeleteview(ListView):
     model = Ticket
     template_name = "officer/delete_ticket.html"
@@ -419,9 +433,34 @@ class Close_Ticket(DetailView):
     context_object_name = 'tickets'
 
 
+# def close_ticket(request, pk):
+#     ticket = Ticket.objects.get(ticket_id=pk)
+#     if request.method == "POST":
+#         ticket = Ticket.objects.get(ticket_id=pk)
+#         ticket.ticket_status = "Closed"
+#         officer_obj = get_object_or_404(OfficerProfile, user=request.user)
+#         ticket.closed_by = officer_obj
+#         ticket.save()
+#         tickets = Ticket.objects.all()
+#         context = {
+#             "object_list": tickets
+#         }
+#         return render(request, 'officer/tickets.html', context)
+#     context = {
+#         "tickets": ticket
+#     }
+
+#     return render(request, 'officer/close_ticket.html', context)
+
+
 def close_ticket(request, pk):
     ticket = Ticket.objects.get(ticket_id=pk)
     if request.method == "POST":
+        subject = "Ticket Closure"
+        message = f'Your issue was solved and ticket was close'
+        from_email = settings.EMAIL_HOST_USER
+        recipient_list = ['asaliasali346@gmail.com']
+        send_mail(subject, message, from_email, recipient_list, fail_silently=False)
         ticket = Ticket.objects.get(ticket_id=pk)
         ticket.ticket_status = "Closed"
         officer_obj = get_object_or_404(OfficerProfile, user=request.user)
@@ -437,7 +476,6 @@ def close_ticket(request, pk):
     }
 
     return render(request, 'officer/close_ticket.html', context)
-
 
 # def close_ticket(request, pk):
 #     ticket = Ticket.objects.get(ticket_id=pk)
@@ -593,6 +631,9 @@ class Contact_us(TemplateView):
 
 class Terms(TemplateView):
     template_name = 'terms.html'
+
+class Help(TemplateView):
+    template_name = 'help.html'
 
 
 # def delete_ticket(request,pk):

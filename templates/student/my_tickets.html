@@ -38,7 +38,13 @@
                             <td>{{ ticket.ticket_id }}</td>
                             <td>{{ ticket.ticket_name }}</td>
                             <td>{{ ticket.ticket_type }}</td>
+
+                            {% if ticket.ticket_status == "Open" %}
+                            <td style="color: red;"> {{ ticket.ticket_status }} </td>
+                            {% else %}
                             <td>{{ ticket.ticket_status }}</td>
+                            {% endif %}
+
                             <td>{{ ticket.created_at}}</td>
                             <td>{{ ticket.updated_at}}</td>
                            
@@ -53,14 +59,14 @@
 
                 </table>
             </div>
-            <div class="pagination">
+            <!-- <div class="pagination">
                 <div><i class="fa-solid fa-angle-left"></i></div>
                 <div><i class="fa-solid fa-chevron-left"></i></div>
                 <div>1</div>
                 <div>2</div>
                 <div><i class="fa-solid fa-angle-right"></i></div>
                 <div><i class="fa-solid fa-chevron-right"></i></div>
-            </div>
+            </div> -->
         </div>
     </div>
 

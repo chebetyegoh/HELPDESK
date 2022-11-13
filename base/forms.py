@@ -6,6 +6,7 @@ from django.forms import ModelForm
 from base.models import Users, Student, StudentProfile, Ticket
 from django.db import transaction
 from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
 
 
 class SignupStudent(UserCreationForm):
@@ -214,15 +215,15 @@ class RaiseTicketForm(forms.ModelForm):
         required=True,
         help_text='Enter Ticket Name',
         widget=forms.TextInput(
-            attrs={'class': 'input--style-5', 'placeholder': 'Ticket Name'}),
+            attrs={'class': 'input--style-5', 'placeholder': 'Enter Ticket Name'}),
     )
 
     ticket_type = forms.CharField(
         max_length=100,
         required=True,
-        help_text='Enter Ticket Type',
+        help_text='Enter Ticket Priority ( Critical, High, Low)',
         widget=forms.TextInput(
-            attrs={'class': 'input--style-5', 'placeholder': 'Ticket Type'}),
+            attrs={'class': 'input--style-5', 'placeholder': 'Enter Ticket Priority ( Critical, High, Low)'}),
     )
 
     ticket_description = forms.CharField(
@@ -230,15 +231,20 @@ class RaiseTicketForm(forms.ModelForm):
         required=True,
         help_text='Enter Ticket Description',
         widget=forms.TextInput(
-            attrs={'class': 'input--style-5', 'placeholder': 'Ticket Description '}),
+            attrs={'class': 'input--style-5', 'placeholder': 'Enter brief Description of your ticket'}),
     )
 
     reg_no = forms.CharField(
         max_length=100,
         required=True,
         help_text='Enter Your Registration Number',
+        # validators=[
+        #     RegexValidator(
+        #         '^(A-Z0-90-9\/0-9\/0-9)',
+        #         message="Reg Number not valid"
+        #     )],
         widget=forms.TextInput(
-            attrs={'class': 'input--style-5', 'placeholder': 'Registration Number'}),
+            attrs={'class': 'input--style-5', 'placeholder': 'Enter your Registration Number'}),
     )
 
     class Meta():

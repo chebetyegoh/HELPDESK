@@ -24,11 +24,19 @@
             </div>
 
             <span>{{ object.ticket_name}}</span>
-            <p><span>Ticket Status:</span> {{ object.ticket_status }}</p>
+            {% if object.ticket_status == "Open" %}
+            <p style="color: red;font-weight: 800; "><span style="color: black;">Ticket Status:</span> {{ object.ticket_status }}</p>
+            {% else %}
+            <p style="font-weight: 800; "><span>Ticket Status:</span> {{ object.ticket_status }}</p>
+            {% endif %}
+            
             <p><span>Created at:</span> {{ object.created_at }}</p>
             <p>{{ object.ticket_description }}</p>
 
+
+            {% if object.ticket_status == "Open" %}
             <a href="{% url 'update-ticket' object.ticket_id %}"><button style="background-color: teal;">Update</button></a>
+            {% endif %}
             <a href="{% url 'ticketdeleteview' object.ticket_id%}"><button style="background-color: red;">Delete</button></a>
 
         </div>
