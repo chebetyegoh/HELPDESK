@@ -8,13 +8,13 @@ from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import TemplateView, CreateView, ListView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import OfficerProfile, Ticket, Student, Officer
+from .models import OfficerProfile, Ticket
 from django.views.decorators.csrf import csrf_protect
 from .forms import SignupStudent, LoginStudentForm, MyChangeFormPassword, EditProfile, RaiseTicketForm, LoginOfficerForm, LoginAdminForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.decorators.csrf import csrf_exempt
-from .models import Users, StudentProfile
+from .models import Users, StudentProfile, OfficerProfile
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
@@ -22,9 +22,131 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core import serializers
 from django.core.mail import send_mail
 from django.conf import settings
+from django.http import FileResponse
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+
 
 # from django import form
 # Create your views here.
+
+def student_pdf(request):
+    buf = io.BytesIO()
+    canv = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+    textob = canv.beginText()
+    textob.setTextOrigin(inch, inch)
+    textob.setFont('Helvetica', 14)
+
+    students = StudentProfile.objects.all()
+    print(students)
+    lines =[
+        "STUDENT REPORT",
+        " ",
+    ]
+
+
+    for student in students:
+        # if student.role == "Student":
+        lines.append(student.user.first_name)
+        lines.append(student.user.last_name)
+        lines.append(student.user.email)
+        lines.append(student.user.username)
+        # lines.append(student.date_joined)
+        lines.append("===============================")
+
+    for line in lines:
+        textob.textLine(line)
+
+    canv.drawText(textob)
+
+    title = "STUDENT REPORT"
+    canv.setTitle(title)
+
+    canv.showPage()
+    canv.save()
+    buf.seek(0)
+
+    return FileResponse(buf, as_attachment=True, filename='student_report.pdf')
+
+
+def officer_pdf(request):
+    buf = io.BytesIO()
+    canv = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+    textob = canv.beginText()
+    textob.setTextOrigin(inch, inch)
+    textob.setFont('Helvetica', 14)
+
+    officers = OfficerProfile.objects.all()
+    print(officers)
+    lines =[
+        "OFFICER REPORT",
+        " "
+    ]
+
+
+    for officer in officers:
+        
+        lines.append(officer.user.first_name)
+        lines.append(officer.user.last_name)
+        lines.append(officer.user.email)
+        lines.append(officer.user.username)
+        # lines.append(student.date_joined)
+        lines.append("===============================")
+
+    for line in lines:
+        textob.textLine(line)
+
+    canv.drawText(textob)
+
+    title = "OFFICER REPORT"
+    canv.setTitle(title)
+
+    canv.showPage()
+    canv.save()
+    buf.seek(0)
+
+    return FileResponse(buf, as_attachment=True, filename='officer_report.pdf')
+
+
+def ticket_pdf(request):
+    buf = io.BytesIO()
+    canv = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+    textob = canv.beginText()
+    textob.setTextOrigin(inch, inch)
+    textob.setFont('Helvetica', 14)
+
+    tickets = Ticket.objects.all()
+    print(tickets)
+    lines =[
+        "TICKET REPORT",
+        " ",
+    ]
+
+
+    for ticket in tickets:
+        # str(lines.append(ticket.ticket_id))
+        lines.append(ticket.ticket_name)
+        lines.append(ticket.ticket_status)
+        lines.append(ticket.ticket_type)
+        lines.append(ticket.ticket_description)
+        # lines.append(ticket.created_at).__str__
+        lines.append("====================================")
+
+    for line in lines:
+        textob.textLine(line)
+
+    canv.drawText(textob)
+
+    title = "TICKET REPORT"
+    canv.setTitle(title)
+
+    canv.showPage()
+    canv.save()
+    buf.seek(0)
+
+    return FileResponse(buf, as_attachment=True, filename='ticket_report.pdf')
 
 
 class Home(TemplateView):

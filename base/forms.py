@@ -238,11 +238,11 @@ class RaiseTicketForm(forms.ModelForm):
         max_length=100,
         required=True,
         help_text='Enter Your Registration Number',
-        # validators=[
-        #     RegexValidator(
-        #         '^(A-Z0-90-9\/0-9\/0-9)',
-        #         message="Reg Number not valid"
-        #     )],
+        validators=[
+            RegexValidator(
+                '\W+(([A-Z]{1,2})(\d{2})\/(\d{5})\/(\d{2})\W+)',
+                message="Reg Number not valid"
+            )],
         widget=forms.TextInput(
             attrs={'class': 'input--style-5', 'placeholder': 'Enter your Registration Number'}),
     )

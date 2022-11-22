@@ -52,7 +52,9 @@ urlpatterns =[
     # path('graph/',views.graph, name='graph'),
     path('help/', views.Help.as_view(), name='help'),
     path('graph/',views.Graph.as_view(), name='graph'),
-    
+    path('student-pdf/',views.student_pdf, name='student-pdf'),
+    path('ticket-pdf/',views.ticket_pdf, name='ticket-pdf'),
+    path('officer-pdf/',views.officer_pdf, name='officer-pdf'),
     
                                                  
 ]
